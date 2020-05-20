@@ -56,7 +56,7 @@ function fn__ConfirmYN() {
   }
 
   pPrompt=${1?"No prmpt"}
-  read -t ${_PROMPTS_TIMEOUT_SECS_} -p "_??___ ${pPrompt} (y/N) " -i 'No' -r RESP || echo
+  read -t ${_PROMPTS_TIMEOUT_SECS_} -p "_??_ ${pPrompt} (y/N) " -i 'No' -r RESP || echo
   RESP=${RESP^^}; RESP=${RESP:0:1}
   [[ $RESP == 'Y' ]] && return ${__YES} || return ${__NO}
 }

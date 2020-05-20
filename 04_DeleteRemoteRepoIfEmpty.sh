@@ -25,7 +25,6 @@ trap traperr ERR
 [[ ${__env_gitserverConstants} ]] || source ./utils/__env_gitserverConstants.sh
 [[ ${fn__GitserverGeneric} ]] || source ./utils/fn__GitserverGeneric.sh
 [[ ${fn__UtilityGeneric} ]] || source ./utils/fn__UtilityGeneric.sh
-# [[ ${fn__ConfirmYN} ]] || source ./utils/fn__ConfirmYN.sh
 
 
 ## ==========================================================================
@@ -94,7 +93,8 @@ fi
 
 # validate repository name
 #
-lCanonicalClientGitRemoteRepoName=$( fn__SanitizeInputAlphaNum ${pClientGitRemoteRepoName} )
+# lCanonicalClientGitRemoteRepoName=$( fn__SanitizeInputAlphaNum ${pClientGitRemoteRepoName} )
+lCanonicalClientGitRemoteRepoName=$( fn__SanitizeInputIdentifier ${pClientGitRemoteRepoName} )
 
 fn__InputIsValid \
   "${pClientGitRemoteRepoName}" \
