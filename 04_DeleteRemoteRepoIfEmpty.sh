@@ -18,6 +18,7 @@ trap traperr ERR
 
 declare __ENABLE_SOURCING_TRACE=false
 
+
 [[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 [[ ${fn__DockerGeneric} ]] || source ./utils/fn__DockerGeneric.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 [[ ${__env_devcicd_net} ]] || source ./utils/__env_devcicd_net.sh "1.0.0" || exit ${__EXECUTION_ERROR}
@@ -26,6 +27,8 @@ declare __ENABLE_SOURCING_TRACE=false
 [[ ${fn__GitserverGeneric} ]] || source ./utils/fn__GitserverGeneric.sh "1.0.1" || exit ${__EXECUTION_ERROR}
 [[ ${fn__UtilityGeneric} ]] || source ./utils/fn__UtilityGeneric.sh "1.0.1" || exit ${__EXECUTION_ERROR}
 [[ ${_04_DeleteRemoteRepoIfEmpty_utils} ]] || source ./04_DeleteRemoteRepoIfEmpty_utils.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+
+[[ ${_02_create_git_client_container_utils} ]] || source ./02_create_git_client_container_utils.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 
 ## ##########################################################################################
 ## ##########################################################################################
@@ -40,11 +43,16 @@ declare __ENABLE_SOURCING_TRACE=false
 #
 # declare pClientGitRemoteRepoName=${1:-${__GITSERVER_REM_TEST_REPO_NAME}}
 
+declare lCWDCumProjectName=$(pwd)
+fn__GetProjectName \
+  "lCWDCumProjectName" || {
+    echo "${0}:${LINENO} must run from directory with name _commonUtils and will use the name of its parent directory as project directory."
+    exit ${__FAILED}
+  }
+
 declare pClientGitRemoteRepoName=""
-
-
 fn__GetRemoteGitRepoName \
-  ${__GITSERVER_REM_TEST_REPO_NAME}  \
+  ${lCWDCumProjectName}  \
   "pClientGitRemoteRepoName" && STS=$? || STS=$?
 if [[ ${STS} -eq ${__SUCCESS} ]]
 then

@@ -7,6 +7,7 @@
 
 declare -r __env_GlobalConstants="1.0.0"
 
+declare __ENABLE_SOURCING_TRACE=${__ENABLE_SOURCING_TRACE:-false}
 
 readonly __ZERO__=0
 readonly __TRUE=${__ZERO__}
