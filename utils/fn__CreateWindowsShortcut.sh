@@ -4,7 +4,7 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
-declare -u fn__CreateWindowsShortcut="SOURCED"
+declare -u fn__CreateWindowsShortcut="1.0.0"
 
 ## ########################################################################
 ## create a windows 10 shortcut

@@ -4,7 +4,7 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
-declare -ur fn__SSHInContainerUtils_tests="SOURCED"
+declare -ur fn__SSHInContainerUtils_tests="1.0.0"
 echo "INFO fn__SSHInContainerUtils_tests"
 
 [[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh

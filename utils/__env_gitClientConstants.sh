@@ -5,7 +5,7 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
-declare -u __env_gitClientConstants="SOURCED"
+declare -u __env_gitClientConstants="1.0.0"
 
 [[ ${__env_devcicd_net} ]] || source ./utils/__env_devcicd_net.sh
 [[ ${__env_gitserverConstants} ]] || source ./utils/__env_gitserverConstants.sh

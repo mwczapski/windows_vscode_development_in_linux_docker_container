@@ -5,7 +5,7 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
-declare -u _02_create_git_client_container_tests="SOURCED"
+declare -u _02_create_git_client_container_tests="1.0.0"
 echo "INFO 02_create_git_client_container_tests"
 
 [[ ${bash_test_utils} ]] || source ./bash_test_utils/bash_test_utils.sh

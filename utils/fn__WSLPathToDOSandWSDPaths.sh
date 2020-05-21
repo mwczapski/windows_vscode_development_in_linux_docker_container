@@ -4,7 +4,7 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
-declare -u fn__WSLPathToDOSandWSDPaths="SOURCED"
+declare -u fn__WSLPathToDOSandWSDPaths="1.0.0"
 
 # common environment variable values and utility functions
 #

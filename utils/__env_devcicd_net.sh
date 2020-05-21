@@ -6,7 +6,7 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
-declare -u __env_devcicd_net="SOURCED"
+declare -u __env_devcicd_net="1.0.0"
 
 [[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh
 

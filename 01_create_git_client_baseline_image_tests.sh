@@ -6,7 +6,7 @@
 # #############################################
 
 
-declare -u _01_create_git_client_baseline_image_tests="SOURCED"
+declare -u _01_create_git_client_baseline_image_tests="1.0.0"
 echo "INFO 01_create_git_client_baseline_image_tests"
 
 

@@ -4,7 +4,7 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
-declare -u fn__UtilityGeneric_tests="SOURCED"
+declare -u fn__UtilityGeneric_tests="1.0.0"
 echo "INFO fn__UtilityGeneric_tests"
 
 [[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh

@@ -4,7 +4,7 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
-declare -u fn__WSLPathToDOSandWSDPaths_tests="SOURCED"
+declare -u fn__WSLPathToDOSandWSDPaths_tests="1.0.0"
 echo "INFO fn__WSLPathToDOSandWSDPaths_tests"
 
 

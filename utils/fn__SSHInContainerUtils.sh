@@ -5,7 +5,7 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
-declare -ur fn__SSHInContainerUtils="SOURCED"
+declare -ur fn__SSHInContainerUtils="1.0.0"
 
 # common environment variable values and utility functions
 #

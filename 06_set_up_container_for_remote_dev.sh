@@ -17,7 +17,7 @@ traperr() {
 set -o errtrace
 trap traperr ERR
 
-declare -u _06_set_up_container_for_remote_dev="SOURCED"
+declare -u _06_set_up_container_for_remote_dev="1.0.0"
 
 # common environment variable values and utility functions
 #
@@ -190,39 +190,43 @@ function fnInitClientContainerGitEnvironment() {
   return ${STS}
 }
 
+# Do these two function - they are needed, apparently
+# Do these two function - they are needed, apparently
+# Do these two function - they are needed, apparently
+# Do these two function - they are needed, apparently
 
-# function fnUpdateGITServerAuthorized_keys() {
-#   echo "____ save original authorized_keys, and update authorized_keys";
-#   pContainerName=${1?"Usage: $0 requires Value of __DEBMIN_PPROJECT_NAME and __GITSERVER_NAME as its arguments"}
-#   pGITServerName=${2?"Usage: $0 requires Value of __DEBMIN_PPROJECT_NAME and __GITSERVER_NAME as its arguments"}
-#   ${__DOCKER_EXE} container exec -itu git -w /home/git ${pGITServerName} ${__GITSERVER_SHELL} -c "
-#   mv -v ~/.ssh/authorized_keys ~/.ssh/authorized_keys_previous
-#   chmod 0600 ~/.ssh/authorized_keys_previous
+function fnUpdateGITServerAuthorized_keys() {
+  echo "____ save original authorized_keys, and update authorized_keys";
+  pContainerName=${1?"Usage: $0 requires Value of __DEBMIN_PPROJECT_NAME and __GITSERVER_NAME as its arguments"}
+  pGITServerName=${2?"Usage: $0 requires Value of __DEBMIN_PPROJECT_NAME and __GITSERVER_NAME as its arguments"}
+  ${__DOCKER_EXE} container exec -itu git -w /home/git ${pGITServerName} ${__GITSERVER_SHELL} -c "
+  mv -v ~/.ssh/authorized_keys ~/.ssh/authorized_keys_previous
+  chmod 0600 ~/.ssh/authorized_keys_previous
 
-#   test -e ~/.ssh/authorized_keys \
-#   && cp -v ~/.ssh/authorized_keys ~/.ssh/authorized_keys_previous \
-#   || touch ~/.ssh/authorized_keys ~/.ssh/authorized_keys_previous 
+  test -e ~/.ssh/authorized_keys \
+  && cp -v ~/.ssh/authorized_keys ~/.ssh/authorized_keys_previous \
+  || touch ~/.ssh/authorized_keys ~/.ssh/authorized_keys_previous 
 
-#     sed \"/${pContainerName}/d\" ~/.ssh/authorized_keys_previous > ~/.ssh/authorized_keys
+    sed \"/${pContainerName}/d\" ~/.ssh/authorized_keys_previous > ~/.ssh/authorized_keys
 
-#     cat /home/git/.ssh/${pContainerName}_id_rsa.pub >> ~/.ssh/authorized_keys
+    cat /home/git/.ssh/${pContainerName}_id_rsa.pub >> ~/.ssh/authorized_keys
 
-#     echo 'authorized_keys after append'
-#     cat ~/.ssh/authorized_keys 
-#     "
-# }
+    echo 'authorized_keys after append'
+    cat ~/.ssh/authorized_keys 
+    "
+}
 
 
-# function fnAddGITServerToLocalKnown_hostsAndTestSshAccess() {
-#     echo "____ add __GITSERVER ssh fingerprint to known_hosts and test access to git repository";
-#     # https://www.techrepublic.com/article/how-to-easily-add-an-ssh-fingerprint-to-your-knownhosts-file-in-linux/
-#     pContainerName=${1?"Usage: $0 requires Value of __DEBMIN_PPROJECT_NAME and __GITSERVER_NAME as its arguments"}
-#     pGITServerName=${2?"Usage: $0 requires Value of __DEBMIN_PPROJECT_NAME and __GITSERVER_NAME as its arguments"}
-# 	${__DOCKER_EXE}  exec -itu ${__DEBMIN_USERNAME} -w ${__DEBMIN_GUEST_HOME} ${pContainerName} ${__DEBMIN_SHELL} -c "
-#         ssh-keyscan -H ${pGITServerName} >> ~/.ssh/known_hosts
-#         ssh git@${pGITServerName} list && echo 'Can connect to the remote git repo' || echo 'Cannot connect to the remote git repo'
-#         "
-# }
+function fnAddGITServerToLocalKnown_hostsAndTestSshAccess() {
+    echo "____ add __GITSERVER ssh fingerprint to known_hosts and test access to git repository";
+    # https://www.techrepublic.com/article/how-to-easily-add-an-ssh-fingerprint-to-your-knownhosts-file-in-linux/
+    pContainerName=${1?"Usage: $0 requires Value of __DEBMIN_PPROJECT_NAME and __GITSERVER_NAME as its arguments"}
+    pGITServerName=${2?"Usage: $0 requires Value of __DEBMIN_PPROJECT_NAME and __GITSERVER_NAME as its arguments"}
+	${__DOCKER_EXE}  exec -itu ${__DEBMIN_USERNAME} -w ${__DEBMIN_GUEST_HOME} ${pContainerName} ${__DEBMIN_SHELL} -c "
+        ssh-keyscan -H ${pGITServerName} >> ~/.ssh/known_hosts
+        ssh git@${pGITServerName} list && echo 'Can connect to the remote git repo' || echo 'Cannot connect to the remote git repo'
+        "
+}
 
 
 # function fnPerformGitSetupOnHost() {

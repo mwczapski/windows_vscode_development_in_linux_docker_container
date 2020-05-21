@@ -5,7 +5,7 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
-declare -ur bash_test_utils="SOURCED"
+declare -ur bash_test_utils="1.0.0"
 
 [[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh
 

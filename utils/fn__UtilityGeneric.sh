@@ -4,7 +4,7 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
-declare -u fn__UtilityGeneric="SOURCED"
+declare -u fn__UtilityGeneric="1.0.0"
 
 [[ ${__env_GlobalConstants} ]] || source __env_GlobalConstants.sh
 

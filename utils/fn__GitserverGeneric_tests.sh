@@ -5,7 +5,7 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
-declare -ur fn__GitserverGeneric_tests="SOURCED"
+declare -ur fn__GitserverGeneric_tests="1.0.0"
 echo "INFO fn__GitserverGeneric_tests"
 
 # common environment variable values and utility functions

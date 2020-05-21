@@ -4,7 +4,7 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
-declare -u fn__DockerGeneric="SOURCED"
+declare -u fn__DockerGeneric="1.0.0"
 
 readonly __DOCKER_NO_EXT="docker"
 readonly __DOCKER_EXE="docker.exe"

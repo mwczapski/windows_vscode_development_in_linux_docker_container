@@ -5,7 +5,7 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
-declare -u __env_GlobalConstants="SOURCED"
+declare -u __env_GlobalConstants="1.0.0"
 
 readonly __ZERO__=0
 readonly __TRUE=${__ZERO__}
