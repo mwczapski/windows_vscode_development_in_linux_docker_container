@@ -7,7 +7,7 @@
 
 declare -ur bash_test_utils="1.0.0"
 
-[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh
+[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0"
 
 
 # defining _FORCE_RUNNING_ALL_TESTS_ will force all test sets in this suite 

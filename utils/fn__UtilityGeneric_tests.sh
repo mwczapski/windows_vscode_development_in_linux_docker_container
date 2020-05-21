@@ -7,7 +7,7 @@
 declare -u fn__UtilityGeneric_tests="1.0.0"
 echo "INFO fn__UtilityGeneric_tests"
 
-[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh
+[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0"
 [[ ${fn__UtilityGeneric} ]] || source ./utils/fn__UtilityGeneric.sh
 
 [[ ${bash_test_utils} ]] || source ./bash_test_utils/bash_test_utils.sh

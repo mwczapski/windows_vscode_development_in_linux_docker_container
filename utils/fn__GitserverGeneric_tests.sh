@@ -10,7 +10,7 @@ echo "INFO fn__GitserverGeneric_tests"
 
 # common environment variable values and utility functions
 #
-[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh
+[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0"
 [[ ${fn__GitserverGeneric} ]] || source ./utils/fn__GitserverGeneric.sh
 
 

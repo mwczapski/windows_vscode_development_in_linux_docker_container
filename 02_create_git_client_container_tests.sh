@@ -10,7 +10,7 @@ echo "INFO 02_create_git_client_container_tests"
 
 [[ ${bash_test_utils} ]] || source ./bash_test_utils/bash_test_utils.sh
 
-[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh
+[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0"
 [[ ${__env_gitClientConstants} ]] || source ./utils/__env_gitClientConstants.sh
 [[ ${fn__UtilityGeneric} ]] || source ./utils/fn__UtilityGeneric.sh
 

@@ -6,14 +6,10 @@
 # #############################################
 
 declare -u __env_gitserverConstants="1.0.0"
+fn__SourcedVersionOK "${0}" "${1:-0.0.0}" "${__env_gitserverConstants}" || exit ${__EXECUTION_ERROR}
 
-[[ ${__env_devcicd_net} ]] || source ./utils/__env_devcicd_net.sh
+[[ ${__env_devcicd_net} ]] || source ./utils/__env_devcicd_net.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 
-# [[ ${GITSERVER_STATIC_SERVER_IP:-NO} == "NO" ]] \
-#   && {
-#     echo "__env_devcicd_net.sh is a pre-requisite for ${0} - sourcing it"
-#     source ./utils/__env_devcicd_net.sh
-#   } || true
 
 readonly __GIT_HOST_PORT=40022
 readonly _GIT_GUEST_PORT_=22

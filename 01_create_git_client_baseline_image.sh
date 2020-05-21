@@ -20,21 +20,23 @@ trap traperr ERR
 savedPS4=${PS4}
 export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
 
+
+[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+
 # common environment variable values and utility functions
 #
-[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh
-[[ ${fn__DockerGeneric} ]] || source ./utils/fn__DockerGeneric.sh
-[[ ${__env_devcicd_net} ]] || source ./utils/__env_devcicd_net.sh
-[[ ${__env_gitserverConstants} ]] || source ./utils/__env_gitserverConstants.sh
-[[ ${__env_gitClientConstants} ]] || source ./utils/__env_gitClientConstants.sh
-[[ ${fn__WSLPathToDOSandWSDPaths} ]] || source ./utils/fn__WSLPathToDOSandWSDPaths.sh
-[[ ${fn__UtilityGeneric} ]] || source ./utils/fn__UtilityGeneric.sh
-[[ ${fn__GitserverGeneric} ]] || source ./utils/fn__GitserverGeneric.sh
-[[ ${fn__CreateWindowsShortcut} ]] || source ./utils/fn__CreateWindowsShortcut.sh
+[[ ${fn__DockerGeneric} ]] || source ./utils/fn__DockerGeneric.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${__env_devcicd_net} ]] || source ./utils/__env_devcicd_net.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${__env_gitserverConstants} ]] || source ./utils/__env_gitserverConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${__env_gitClientConstants} ]] || source ./utils/__env_gitClientConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${fn__WSLPathToDOSandWSDPaths} ]] || source ./utils/fn__WSLPathToDOSandWSDPaths.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${fn__UtilityGeneric} ]] || source ./utils/fn__UtilityGeneric.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${fn__GitserverGeneric} ]] || source ./utils/fn__GitserverGeneric.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${fn__CreateWindowsShortcut} ]] || source ./utils/fn__CreateWindowsShortcut.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 
 # functions specific to this script - separated to facilitate  unit testing 
 #
-[[ ${_01_create_git_client_baseline_image_utils} ]] || source ./01_create_git_client_baseline_image_utils.sh
+[[ ${_01_create_git_client_baseline_image_utils} ]] || source ./01_create_git_client_baseline_image_utils.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 
 
 ## ##################################################################################

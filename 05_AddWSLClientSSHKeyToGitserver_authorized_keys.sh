@@ -17,11 +17,12 @@ set -o errtrace
 trap traperr ERR
 
 
+[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__FAILED};
+
 # common environment variable values and utility functions
 #
-[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh
-[[ ${__env_gitserverConstants} ]] || source ./utils/__env_gitserverConstants.sh
-[[ ${fn__SSHInContainerUtils} ]] || source ./utils/fn__SSHInContainerUtils.sh
+[[ ${__env_gitserverConstants} ]] || source ./utils/__env_gitserverConstants.sh "1.0.0" || exit ${__FAILED}
+[[ ${fn__SSHInContainerUtils} ]] || source ./utils/fn__SSHInContainerUtils.sh "1.0.0" || exit ${__FAILED}
 
 
 ## ##########################################################################################

@@ -7,7 +7,7 @@
 declare -ur fn__SSHInContainerUtils_tests="1.0.0"
 echo "INFO fn__SSHInContainerUtils_tests"
 
-[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh
+[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0"
 [[ ${fn__UtilityGeneric} ]] || source ./utils/fn__UtilityGeneric.sh
 [[ ${fn__DockerGeneric} ]] || source ./utils/fn__DockerGeneric.sh
 

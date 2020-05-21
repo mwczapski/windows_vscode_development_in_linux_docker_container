@@ -4,7 +4,11 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
-declare -u fn__DockerGeneric="1.0.0"
+[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+
+declare -r fn__DockerGeneric="1.0.0"
+fn__SourcedVersionOK "${0}" "${1:-0.0.0}" "${fn__DockerGeneric}" || exit ${__EXECUTION_ERROR}
+
 
 readonly __DOCKER_NO_EXT="docker"
 readonly __DOCKER_EXE="docker.exe"
@@ -13,7 +17,6 @@ readonly __DOCKER_COMPOSE_EXE="docker-compose.exe"
 
 readonly __DOCKER_REPOSITORY_HOST="mcz11.czapski.id.au"
 
-[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh
 
 :<<-'EXAMPLE----------------------------------------------------------'
       __CONTAINER_NAME="node13130"

@@ -19,13 +19,14 @@ trap traperr ERR
 
 # common environment variable values and utility functions
 #
-[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh
-[[ ${fn__DockerGeneric} ]] || source ./utils/fn__DockerGeneric.sh
-[[ ${__env_devcicd_net} ]] || source ./utils/__env_devcicd_net.sh
-[[ ${__env_gitserverConstants} ]] || source ./utils/__env_gitserverConstants.sh
-[[ ${fn__GitserverGeneric} ]] || source ./utils/fn__GitserverGeneric.sh
-[[ ${fn__UtilityGeneric} ]] || source ./utils/fn__UtilityGeneric.sh
-# [[ ${fn__ConfirmYN} ]] || source ./utils/fn__ConfirmYN.sh
+[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+
+[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${fn__DockerGeneric} ]] || source ./utils/fn__DockerGeneric.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${__env_devcicd_net} ]] || source ./utils/__env_devcicd_net.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${__env_gitserverConstants} ]] || source ./utils/__env_gitserverConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${fn__GitserverGeneric} ]] || source ./utils/fn__GitserverGeneric.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${fn__UtilityGeneric} ]] || source ./utils/fn__UtilityGeneric.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 
 
 ## ==========================================================================

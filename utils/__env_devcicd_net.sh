@@ -6,9 +6,12 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
-declare -u __env_devcicd_net="1.0.0"
 
-[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh
+[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+
+declare -u __env_devcicd_net="1.0.0"
+fn__SourcedVersionOK "${0}" "${1:-0.0.0}" "${__env_devcicd_net}" || exit ${__EXECUTION_ERROR}
+
 
 # change this if you want to create network with a different name
 #

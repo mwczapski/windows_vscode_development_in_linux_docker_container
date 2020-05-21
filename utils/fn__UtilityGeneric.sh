@@ -4,16 +4,97 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
-declare -u fn__UtilityGeneric="1.0.0"
+[[ ${__env_GlobalConstants} ]] || { source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__FAILED}; }
 
-[[ ${__env_GlobalConstants} ]] || source __env_GlobalConstants.sh
+declare -r fn__UtilityGeneric="1.0.1"
+fn__SourcedVersionOK "${0}" "${1:-0.0.0}" "${fn__UtilityGeneric}" || exit ${__EXECUTION_ERROR}
 
-
-_PROMPTS_TIMEOUT_SECS_=${_PROMPTS_TIMEOUT_SECS_:-15.5}
 
 
 :<<-'------------Function_Usage_Note-------------------------------'
-  Usage: 
+fn__VariableMissingOrEmpty "${VarName}" && echo "Missing or Empty" || echo "Present and Valued"
+------------Function_Usage_Note-------------------------------
+function fn__VariableMissingOrEmpty() { 
+  [[ -z "${1}" ]] ; 
+}
+
+:<<-'------------Function_Usage_Note-------------------------------'
+fn__VariablePresentAndValued "${VarName}" && echo "Present and Valued" || echo "Missing or Empty" 
+------------Function_Usage_Note-------------------------------
+function fn__VariablePresentAndValued() { 
+  [[ -n "${1}" ]] ; 
+}
+
+
+
+:<<-'------------Function_Usage_Note-------------------------------'
+  Usage:
+    fn__GetOptionValue \
+      "${getoptsOptionsString}" \
+      "${commandLineArgumentStrinfg}" \
+      "CallersOutputStringName"
+  Returns:
+    ${__EXECUTION_ERROR} and emits error message to STDERR
+    ${__YES} if command line argument is provided and the option argument
+    ${__NO} if command line argument is not provided
+    ${__EMPTY_ARGUMENT_NOT_ALLOWED} - 1st or 3rd argument is empty or missing
+------------Function_Usage_Note-------------------------------
+fn__GetOptionValue() {
+
+  local -r prOptionsString="${1}"
+  local -r prCmdArguments="${2}"
+  local -r prOutputString=${3}
+
+  fn__VariableMissingOrEmpty  ${1} 2>/dev/null && return ${__EMPTY_ARGUMENT_NOT_ALLOWED}
+  fn__VariableMissingOrEmpty  ${3} 2>/dev/null && return ${__EMPTY_ARGUMENT_NOT_ALLOWED}
+
+  local -n lrefOutputString=${prOutputString}
+
+  # echo "${LINENO}:lrOptionsString:${prOptionsString}"
+  # echo "${LINENO}:lrCmdArguments:${prCmdArguments}"
+  # echo "${LINENO}:lrOutputString:${prOutputString}"
+
+  test ${#prOptionsString} == 0 && return ${__EXECUTION_ERROR}
+  test ${#prCmdArguments} == 0 && return ${__NO}
+  test ${#prOutputString} == 0 && return ${__EXECUTION_ERROR}
+
+  local -r lrOptionLetter=${prOptionsString//:/}
+
+  local _ERROR_=false
+  while getopts "${prOptionsString}" option ${prCmdArguments}
+  do
+    case ${option} in
+      ${lrOptionLetter})
+        # echo "-f was triggered, Parameter: ${OPTARG}" >&2
+        # local -r _OPT_VAL_=${OPTARG^^}
+        # lrefOutputString="${_OPT_VAL_:0:1}"
+        lrefOutputString="${OPTARG}"
+        return ${__YES}
+        # break
+        ;;
+      \?)
+        # ignore options that are not
+        # echo "Invalid option: -${OPTARG}" >&2
+        # _ERROR_=true
+        # return ${__EXECUTION_ERROR}
+        # break
+        ;;
+      :)
+        echo "Option -${OPTARG} requires an argument." >&2
+        _ERROR_=true
+        return ${__EXECUTION_ERROR}
+        # break
+        ;;
+    esac
+  done
+
+  [[ ${_ERROR_} == true ]] && return ${__EXECUTION_ERROR}
+
+}
+
+
+:<<-'------------Function_Usage_Note-------------------------------'
+  Usage:
     fn__RefVariableExists \
       "outerScopeVariableName"
   Returns:
@@ -30,7 +111,7 @@ fn__RefVariableExists() {
 
 
 :<<-'------------Function_Usage_Note-------------------------------'
-  Usage: 
+  Usage:
     fn__ConfirmYN \
       "${prompt}"
   Returns:
@@ -41,7 +122,7 @@ fn__RefVariableExists() {
 ------------Function_Usage_Note-------------------------------
 function fn__ConfirmYN() {
   local -r lUsage='
-  Usage: 
+  Usage:
     fn__ConfirmYN \
       "${prompt}"
   Returns:
@@ -63,7 +144,7 @@ function fn__ConfirmYN() {
 
 
 :<<-'------------Function_Usage_Note-------------------------------'
-  Usage: 
+  Usage:
     fn__GetValidIdentifierInput \
       "inPromptString"  \ # in
       "inMaxLength"  \    # in
@@ -75,18 +156,18 @@ function fn__ConfirmYN() {
   Expects in environment:
     Constants from __env_GlobalConstants
   Notes:
-    Arguments are names of variabes in the outer scope. 
-    'local -n "${XXXX}"' attempts to create a local reference variable 
+    Arguments are names of variabes in the outer scope.
+    'local -n "${XXXX}"' attempts to create a local reference variable
     that give direct access to the value of the corresponding variable
     in the outer scope. The 'outValidValue' is then used to set the value
     in the corresponding outer scope variable and onsequently
     to return a string value as well as completion status to the caller.
-    Not also that the outer scope in/out variablemust have a globally 
+    Not also that the outer scope in/out variablemust have a globally
     unique name in the outer scope. If not, the value will not be set.
 ------------Function_Usage_Note-------------------------------
 function fn__GetValidIdentifierInput() {
   local -r lUsage='
-  Usage: 
+  Usage:
     fn__GetValidIdentifierInput \
       "inPromptString"  \
       "inMaxLength"  \
@@ -116,7 +197,7 @@ function fn__GetValidIdentifierInput() {
 
   # read data - if value is pumped into the function, for example with:
   # fn__GetValidIdentifierInput "inPromptString" "inMaxLength" "inTimeoutSecs" "outValidValue" <<<"${testValue}"
-  # then read will read it and not wait for input 
+  # then read will read it and not wait for input
   # this is great for testing
   #
   local lReaData="${lXoutValidValue}"
@@ -126,7 +207,7 @@ function fn__GetValidIdentifierInput() {
     if [[ ${STS} -ne ${__SUCCESS} ]]  # timeout - 142
     then
       lReaData="${lXoutValidValue}"
-    else 
+    else
       if [[ ! -n "${lReaData}" ]]
       then
         lReaData="${lXoutValidValue}"
@@ -137,7 +218,7 @@ function fn__GetValidIdentifierInput() {
     if [[ ${STS} -ne ${__SUCCESS} ]]  # timeout - 142
     then
       lReaData="${lXoutValidValue}"
-    else 
+    else
       if [[ ! -n "${lReaData}" ]]
       then
         lReaData="${lXoutValidValue}"
@@ -175,9 +256,9 @@ function fn__GetValidIdentifierInput() {
 
 function fn__FileSameButForDate() {
   local lUsage='
-      Usage: 
-        fn__FileSameButForDate 
-          ${__FIRST_FILE_PATH} 
+      Usage:
+        fn__FileSameButForDate
+          ${__FIRST_FILE_PATH}
           ${__SECOND_FILE_PATH}
       '
   [[ $# -lt  2 || ${0^^} == "HELP" ]] && {
@@ -222,7 +303,7 @@ function fn__IsValidRegEx() {
       echo "____ Alleged regular expression '${pRegEx}' must start with [ and end with ]"
       return ${__FAILED}
     }
-  
+
   echo "VALID"
   return ${__SUCCESS}
 }

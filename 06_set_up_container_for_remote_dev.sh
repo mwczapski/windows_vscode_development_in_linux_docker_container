@@ -17,19 +17,18 @@ traperr() {
 set -o errtrace
 trap traperr ERR
 
+[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__FAILED}
+
 declare -u _06_set_up_container_for_remote_dev="1.0.0"
 
 # common environment variable values and utility functions
 #
-[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh
-[[ ${fn__DockerGeneric} ]] || source ./utils/fn__DockerGeneric.sh
-[[ ${__env_devcicd_net} ]] || source ./utils/__env_devcicd_net.sh
-# [[ ${__env_gitserverConstants} ]] || source ./utils/__env_gitserverConstants.sh
-[[ ${fn__WSLPathToDOSandWSDPaths} ]] || source ./utils/fn__WSLPathToDOSandWSDPaths.sh
-[[ ${fn__UtilityGeneric} ]] || source ./utils/fn__UtilityGeneric.sh
-# [[ ${fn__GitserverGeneric} ]] || source ./utils/fn__GitserverGeneric.sh
-[[ ${fn__CreateWindowsShortcut} ]] || source ./utils/fn__CreateWindowsShortcut.sh
-[[ ${_02_create_git_client_container_utils} ]] || source ./02_create_git_client_container_utils.sh
+[[ ${fn__DockerGeneric} ]] || source ./utils/fn__DockerGeneric.sh "1.0.0" || exit ${__FAILED}
+[[ ${__env_devcicd_net} ]] || source ./utils/__env_devcicd_net.sh "1.0.0" || exit ${__FAILED}
+[[ ${fn__WSLPathToDOSandWSDPaths} ]] || source ./utils/fn__WSLPathToDOSandWSDPaths.sh "1.0.0" || exit ${__FAILED}
+[[ ${fn__UtilityGeneric} ]] || source ./utils/fn__UtilityGeneric.sh "1.0.0" || exit ${__FAILED}
+[[ ${fn__CreateWindowsShortcut} ]] || source ./utils/fn__CreateWindowsShortcut.sh "1.0.0" || exit ${__FAILED}
+[[ ${_02_create_git_client_container_utils} ]] || source ./02_create_git_client_container_utils.sh "1.0.0" || exit ${__FAILED}
 
 # functions specific to this script - separated to facilitate  unit testing 
 #

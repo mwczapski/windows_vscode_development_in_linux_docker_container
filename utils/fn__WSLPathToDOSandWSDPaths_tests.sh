@@ -9,7 +9,7 @@ echo "INFO fn__WSLPathToDOSandWSDPaths_tests"
 
 
 
-[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh
+[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0"
 [[ ${fn__WSLPathToDOSandWSDPaths} ]] || source ./utils/fn__WSLPathToDOSandWSDPaths.sh
 
 [[ ${bash_test_utils} ]] || source ./bash_test_utils/bash_test_utils.sh

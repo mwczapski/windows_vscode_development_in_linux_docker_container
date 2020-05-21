@@ -5,14 +5,15 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
-declare -ur fn__GitserverGeneric="1.0.0"
+[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0"
 
-# common environment variable values and utility functions
-#
-[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh
-[[ ${fn__DockerGeneric} ]] || source ./utils/fn__DockerGeneric.sh
-[[ ${__env_devcicd_net} ]] || source ./utils/__env_devcicd_net.sh
-[[ ${__env_gitserverConstants} ]] || source ./utils/__env_gitserverConstants.sh
+declare -ur fn__GitserverGeneric="1.0.1"
+fn__SourcedVersionOK "${0}" "${1:-0.0.0}" "${fn__GitserverGeneric}" || exit ${__EXECUTION_ERROR}
+
+
+[[ ${fn__DockerGeneric} ]] || source ./utils/fn__DockerGeneric.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${__env_devcicd_net} ]] || source ./utils/__env_devcicd_net.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${__env_gitserverConstants} ]] || source ./utils/__env_gitserverConstants.sh "1.0.0"  || exit ${__EXECUTION_ERROR}
 
 
 ##
@@ -257,10 +258,10 @@ function fn__CreateNewClientGitRepositoryOnRemote() {
 }
 
 
-function fn__DeleteEmptyRemoteRepository() {
+function fn__DeleteRemoteRepository() {
     local -r lUsage='
   Usage: 
-    fn__DeleteEmptyRemoteRepository \
+    fn__DeleteRemoteRepository \
       ${__CLIENT_REMOTE_GIT_REPO_NAME_}  \
       ${__GITSERVER_CONTAINER_NAME} \
       ${__GIT_USERNAME} \

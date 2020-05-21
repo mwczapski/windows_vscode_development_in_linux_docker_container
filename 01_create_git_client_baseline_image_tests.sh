@@ -12,7 +12,7 @@ echo "INFO 01_create_git_client_baseline_image_tests"
 
 [[ ${bash_test_utils} ]] || source ./bash_test_utils/bash_test_utils.sh
 
-[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh
+[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0"
 [[ ${fn__UtilityGeneric} ]] || source ./utils/fn__UtilityGeneric.sh
 
 [[ ${_01_create_git_client_baseline_image_utils} ]] || source ./01_create_git_client_baseline_image_utils.sh

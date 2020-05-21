@@ -4,11 +4,13 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
+[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+
 declare -u fn__WSLPathToDOSandWSDPaths="1.0.0"
+fn__SourcedVersionOK "${0}" "${1:-0.0.0}" "${fn__WSLPathToDOSandWSDPaths}" || exit ${__EXECUTION_ERROR}
 
 # common environment variable values and utility functions
 #
-[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh
 
 
 function fn__WSLPathToRealDosPath() { 

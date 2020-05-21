@@ -11,11 +11,12 @@ traperr() {
 set -o errtrace
 trap traperr ERR
 
+[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__FAILED}
 
-source ./utils/__env_YesNoSuccessFailureContants.sh
-source ./utils/fn__WSLPathToDOSandWSDPaths.sh
-source ./utils/fn__ConfirmYN.sh
-source ./utils/fn__CreateWindowsShortcut.sh
+# source ./utils/__env_YesNoSuccessFailureContants.sh
+# source ./utils/fn__WSLPathToDOSandWSDPaths.sh
+# source ./utils/fn__ConfirmYN.sh
+# source ./utils/fn__CreateWindowsShortcut.sh
 
 
 ## ##################################################################################

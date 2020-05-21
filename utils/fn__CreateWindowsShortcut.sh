@@ -4,7 +4,10 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
+[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+
 declare -u fn__CreateWindowsShortcut="1.0.0"
+fn__SourcedVersionOK "${0}" "${1:-0.0.0}" "${fn__CreateWindowsShortcut}" || exit ${__EXECUTION_ERROR}
 
 ## ########################################################################
 ## create a windows 10 shortcut

@@ -5,15 +5,17 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
-declare -ur _02_create_git_client_container_utils
+[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+
+declare -ur _02_create_git_client_container_utils="1.0.0"
+fn__SourcedVersionOK "${0}" "${1:-0.0.0}" "${_02_create_git_client_container_utils}" "1.0.0" || exit ${__EXECUTION_ERROR}
 
 # common environment variable values and utility functions
 #
-[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh
-[[ ${fn__UtilityGeneric} ]] || source ./utils/fn__UtilityGeneric.sh
-[[ ${__env_gitserverConstants} ]] || source ./utils/__env_gitserverConstants.sh
-[[ ${__env_gitClientConstants} ]] || source ./utils/__env_gitClientConstants.sh
-[[ ${fn__WSLPathToDOSandWSDPaths} ]] || source ./utils/fn__WSLPathToDOSandWSDPaths.sh
+[[ ${fn__UtilityGeneric} ]] || source ./utils/fn__UtilityGeneric.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${__env_gitserverConstants} ]] || source ./utils/__env_gitserverConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${__env_gitClientConstants} ]] || source ./utils/__env_gitClientConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${fn__WSLPathToDOSandWSDPaths} ]] || source ./utils/fn__WSLPathToDOSandWSDPaths.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 
 ## ############################################################
 ## functions specific to 01_create_git_client_baseline_image.sh
