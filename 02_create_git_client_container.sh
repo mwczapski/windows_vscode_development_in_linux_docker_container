@@ -51,26 +51,10 @@ declare -i _PROMPTS_TIMEOUT_SECS_=30
 
 
 ##========================================================================================
-## private git server integration support will be omitted by default                    ##
-## command line argument "-g yes" is required to enable it                              ##
-## this implies that the provate git repository exists                                  ##
-## and its details were configured in __env_gitserverConstants.sh                       ##
-##========================================================================================
-##
-fn_IncludePrivateGitServerSupport "${*}" && {
-    __INCLUDE_PRIVATE_GIT_SERVER_SUPPORT=true
-    echo "____ Will include support for private git server integration"
-  } || {
-    __INCLUDE_PRIVATE_GIT_SERVER_SUPPORT=false
-    echo "____ Will NOT include support for private git server integration"
-    echo "____ To include this support invoke the script with '-g yes' command line argument "
-  }
-
-##========================================================================================
-## confirm project directory                                                            ##
+## get project directory and project name                                               ##
 ## /mnt/x/dir1/dir2/..dirn/projectDir/_commonUtils/02_create_git_client_container.sh    ##
 ##========================================================================================
-##
+#
 declare __DEBMIN_HOME=$(pwd)
 fn__GetProjectDirectory \
   "__DEBMIN_HOME" || {
@@ -78,7 +62,8 @@ fn__GetProjectDirectory \
     exit ${__FAILED}
   }
 
-declare lProjectName="${__DEBMIN_HOME}/${__SCRIPTS_DIRECTORY_NAME}"
+# declare lProjectName="${__DEBMIN_HOME}/${__SCRIPTS_DIRECTORY_NAME}"
+declare lProjectName="${__DEBMIN_HOME}"
 fn__GetProjectName \
   "lProjectName" || {
     echo "${0}:${LINENO} must run from directory with name _commonUtils and will use the name of its parent directory as project directory."
@@ -126,6 +111,46 @@ fn__SetEnvironmentVariables \
 echo "____ Set environment variables"; 
 
 
+##========================================================================================
+## private git server integration support will be omitted by default                    ##
+## command line argument "-g yes" is required to enable it                              ##
+## this implies that the provate git repository exists                                  ##
+## and its details were configured in __env_gitserverConstants.sh                       ##
+##========================================================================================
+#
+if fn_IncludePrivateGitServerSupport "${*}" 
+then
+  __INCLUDE_PRIVATE_GIT_SERVER_SUPPORT=true
+  echo "____ Will include support for private git server integration"
+
+  ##========================================================================================
+  ## ask if user wants to create a repo                                                   ##
+  ## if yes, ask for name offering default and an opportunity to change                   ##
+  ## if not - set the flag to not do it                                                   ##
+  ##========================================================================================
+  fn__ConfirmYN "Create remote git repository if it does not exist? " && _CREATE_REMOTE_GIT_REPO_=${__YES} || _CREATE_REMOTE_GIT_REPO_=${__NO}
+  if [[ ${_CREATE_REMOTE_GIT_REPO_} -eq ${__YES} ]]
+  then
+    fn__GetRemoteGitRepoName \
+      ${__GIT_CLIENT_REMOTE_REPO_NAME}  \
+      "__GIT_CLIENT_REMOTE_REPO_NAME" && STS=$? || STS=$?
+    if [[ ${STS} -eq ${__SUCCESS} ]]
+    then
+      echo "____ Will use '${__GIT_CLIENT_REMOTE_REPO_NAME}' as the name of the remote git repository which to create"
+    else
+      _CREATE_REMOTE_GIT_REPO_=${__NO}
+      echo "____ Will not create remote git repository"
+    fi
+  fi
+
+else
+  __INCLUDE_PRIVATE_GIT_SERVER_SUPPORT=false
+  echo "____ Will NOT include support for private git server integration"
+  echo "____ To include this support invoke the script with '-g yes' command line argument "
+fi
+
+
+
 fn__ConfirmYN "Project Directory is ${__DEBMIN_HOME}, Project Name is '${lProjectName}' - Is this correct?" && true || {
   echo -e "____ Aborting ...\n"
   exit ${__FAILED}
@@ -133,6 +158,10 @@ fn__ConfirmYN "Project Directory is ${__DEBMIN_HOME}, Project Name is '${lProjec
 
 
 cd ${__DEBMIN_HOME}
+
+
+
+
 
 
 fn__GetClientContainerName  \
@@ -148,27 +177,6 @@ echo "____ Using '${__GIT_CLIENT_CONTAINER_NAME}' as Container Name and Host Nam
 
 __GIT_CLIENT_HOST_NAME=${__GIT_CLIENT_CONTAINER_NAME}
 
-
-##========================================================================================
-## ask if user wants to create a repo                                                   ##
-## if yes, ask for name offering default and an opportunity to change                   ##
-## if not - set the flag to not do it                                                   ##
-##========================================================================================
-
-fn__ConfirmYN "Create remote git repository if it does not exist? " && _CREATE_REMOTE_GIT_REPO_=${__YES} || _CREATE_REMOTE_GIT_REPO_=${__NO}
-if [[ ${_CREATE_REMOTE_GIT_REPO_} -eq ${__YES} ]]
-then
-  fn__GetRemoteGitRepoName \
-    ${__GIT_CLIENT_REMOTE_REPO_NAME}  \
-    "__GIT_CLIENT_REMOTE_REPO_NAME" && STS=$? || STS=$?
-  if [[ ${STS} -eq ${__SUCCESS} ]]
-  then
-    echo "____ Will use '${__GIT_CLIENT_REMOTE_REPO_NAME}' as the name of the remote git repository which to create"
-  else
-    _CREATE_REMOTE_GIT_REPO_=${__NO}
-    echo "____ Will not create remote git repository"
-  fi
-fi
 
 
 fn__ConfirmYN "Create Windows Shortcuts?" && _CREATE_WINDOWS_SHORTCUTS_=${__YES} || _CREATE_WINDOWS_SHORTCUTS_=${__NO}
