@@ -16,8 +16,6 @@ traperr() {
 set -o errtrace
 trap traperr ERR
 
-declare __ENABLE_SOURCING_TRACE=false
-
 
 [[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 [[ ${fn__DockerGeneric} ]] || source ./utils/fn__DockerGeneric.sh "1.0.0" || exit ${__EXECUTION_ERROR}
@@ -75,7 +73,7 @@ fn__InputIsValid \
     echo "____ (${LINENO}) Aborting ..."
     exit ${__FAILED}
   }
-echo "____ Input accepted as ${lCanonicalClientGitRemoteRepoName}"
+echo "____ Input accepted as '${lCanonicalClientGitRemoteRepoName}'"
 
 
 fn__IsSSHToRemoteServerAuthorised \
@@ -99,14 +97,14 @@ fn__DoesRepoAlreadyExist \
   ${__GITSERVER_SHELL} && STS=$? || STS=$? # can be __NO or __EXECUTION_ERROR
 
   [[ ${STS} -eq ${__EXECUTION_ERROR} ]] && {
-      echo "____ Failed to determine whether Git Repository ${lCanonicalClientGitRemoteRepoName} already exists"
+      echo "____ Failed to determine whether Git Repository '${lCanonicalClientGitRemoteRepoName}' already exists"
       exit ${__FAILED}
   }
   [[ ${STS} -eq ${__NO} ]] && {
-      echo "____ Git Repository ${lCanonicalClientGitRemoteRepoName} does not exists"
+      echo "____ Git Repository '${lCanonicalClientGitRemoteRepoName}' does not exists"
       exit ${__FAILED}
   }
-echo "____ Repository ${lCanonicalCanonicalClientGitRemoteRepoName} exists"
+echo "____ Repository '${lCanonicalCanonicalClientGitRemoteRepoName}' exists"
  
 
 fn__IsRepositoryEmpty \
@@ -120,14 +118,14 @@ if [[ $STS -eq ${__NO} ]]
 then
   fn__ForceRemoveRemoteRepo "${*}" \
     && {
-      echo "____ Repository ${lCanonicalClientGitRemoteRepoName} is not empty - can't delete it using this method - please see server administrator"
+      echo "____ Repository '${lCanonicalClientGitRemoteRepoName}' is not empty - can't delete it using this method - please see server administrator"
       echo "____ (${LINENO}) Aborting ..."
       exit ${__FAILED}
     } || {
       echo "No, don't force" >/dev/null
     }
 fi
-echo "____ Repository ${lCanonicalClientGitRemoteRepoName} will be deleted"
+echo "____ Repository '${lCanonicalClientGitRemoteRepoName}' will be deleted"
 
 fn__DeleteRemoteRepository \
   ${lCanonicalClientGitRemoteRepoName}  \
@@ -140,7 +138,7 @@ fn__DeleteRemoteRepository \
 
 if [[ $STS -eq ${__FAILED} ]]
 then
-  echo "____ Failed to delete repository ${lCanonicalClientGitRemoteRepoName} - please see server administrator"
+  echo "____ Failed to delete repository '${lCanonicalClientGitRemoteRepoName}' - please see server administrator"
   echo "____ (${LINENO}) Aborting ..."
   exit ${__FAILED}
 fi
@@ -152,13 +150,13 @@ fn__DoesRepoAlreadyExist \
   ${__GITSERVER_SHELL} && STS=$? || STS=$? # can be __NO or __EXECUTION_ERROR
 
   [[ ${STS} -eq ${__EXECUTION_ERROR} ]] && {
-      echo "____ Failed to determine whether Git Repository ${lCanonicalClientGitRemoteRepoName} still exists"
+      echo "____ Failed to determine whether Git Repository '${lCanonicalClientGitRemoteRepoName}' still exists"
       exit ${__FAILED}
   }
   [[ ${STS} -eq ${__YES} ]] && {
-      echo "____ Git Repository ${lCanonicalClientGitRemoteRepoName} still exists - please see server administrator"
+      echo "____ Git Repository '${lCanonicalClientGitRemoteRepoName}' still exists - please see server administrator"
       exit ${__FAILED}
   }
-echo "____ Repository ${lCanonicalCanonicalClientGitRemoteRepoName} deleted"
+echo "____ Repository '${lCanonicalClientGitRemoteRepoName}' deleted"
 
 exit ${__DONE} 

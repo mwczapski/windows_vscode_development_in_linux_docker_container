@@ -51,7 +51,7 @@ export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
 #
 if [[ "$(echo $(basename $(pwd)))" != "_commonUtils" ]]
 then
-  echo "____ Script ${0} is expected to be located in, and run from the directory named '_commonUtils' "
+  echo "____ Script '${0}' is expected to be located in, and run from the directory named '${__SCRIPTS_DIRECTORY_NAME}' "
   echo "____ Aborting ..."
   exit ${__FAILED}
 fi
@@ -60,11 +60,11 @@ fi
 __DEBMIN_HOME=$(pwd | sed 's|/_commonUtils||')
  
 
-fn__ConfirmYN "Artifacts location will be ${__DEBMIN_HOME} - Is this correct?" && true || {
+fn__ConfirmYN "Artifacts location will be '${__DEBMIN_HOME}' - Is this correct?" && true || {
   echo "____ Aborting ..."
   exit ${__NO}
 }
-echo "____ Artifacts location confirmed as ${__DEBMIN_HOME}"
+echo "____ Artifacts location confirmed as '${__DEBMIN_HOME}'"
 
 
 fn__ConfirmYN "Push of the image to the remote Docker repository?" && STS=$? || STS=$?
@@ -112,18 +112,18 @@ fn__CreateDockerfile \
   ${__GITSERVER_REPOS_ROOT} \
   ${__TZ_PATH} \
   ${__TZ_NAME} && __NEEDS_REBUILDING=$? || __NEEDS_REBUILDING=$?
-echo "____ Created Dockerfile: ${__DOCKERFILE_PATH}" 
+echo "____ Created Dockerfile: '${__DOCKERFILE_PATH}'" 
 
 
 fn__ImageExists \
   "${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION}" && __IMAGE_EXISTS=${__YES} || __IMAGE_EXISTS=${__NO}
 [[ ${__IMAGE_EXISTS} -eq ${__YES} ]]  \
   && {
-    echo "____ Image ${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION} exists"
+    echo "____ Image '${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION}' exists"
     __REBUILD_IMAGE=${__NO}
   } \
   || {
-    echo "____ Image ${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION} does not exist"
+    echo "____ Image '${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION}' does not exist"
     __REBUILD_IMAGE=${__YES}
   }
 
@@ -134,7 +134,7 @@ if [[ ${__REBUILD_IMAGE} -eq ${__YES} ]]; then
     ${__GIT_CLIENT_IMAGE_VERSION} \
     ${__DEBMIN_HOME_DOS}/Dockerfile.${__GIT_CLIENT_IMAGE_NAME} \
     ${__DEVCICD_NET} ## && STS=${__SUCCESS} || STS=${__FAILED} # let it abort if failed
-  echo "____ Image ${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION} built"
+  echo "____ Image '${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION}' built"
 fi
 
 
@@ -145,16 +145,16 @@ fn__ContainerExists \
 
 if [[ $STS -eq ${__YES} ]]; then
 
-  echo "____ Container ${__GIT_CLIENT_CONTAINER_NAME} exists - will stop and remove"
+  echo "____ Container '${__GIT_CLIENT_CONTAINER_NAME}' exists - will stop and remove"
 
   fn__StopAndRemoveContainer  \
     ${__GIT_CLIENT_CONTAINER_NAME} \
       && STS=${__YES} \
       || STS=${__NO}
 
-  echo "____ Container ${__GIT_CLIENT_CONTAINER_NAME} stopped and removed"
+  echo "____ Container '${__GIT_CLIENT_CONTAINER_NAME}' stopped and removed"
 else
-  echo "____ Container ${__GIT_CLIENT_CONTAINER_NAME} does not exist"
+  echo "____ Container '${__GIT_CLIENT_CONTAINER_NAME}' does not exist"
 fi
 
 
@@ -170,7 +170,7 @@ fn__RunContainerDetached \
     STS=${__FAILED}
    
 
-[[ $STS -eq ${__DONE} ]] && echo "____ Container ${__GIT_CLIENT_CONTAINER_NAME} started"
+[[ $STS -eq ${__DONE} ]] && echo "____ Container '${__GIT_CLIENT_CONTAINER_NAME}'started"
 
 if [[ $STS -eq ${__DONE} ]]; then
 
@@ -178,7 +178,7 @@ if [[ $STS -eq ${__DONE} ]]; then
     "${__GIT_CLIENT_CONTAINER_NAME}" \
     "${__GIT_CLIENT_IMAGE_NAME}" \
     "${__GIT_CLIENT_IMAGE_VERSION}"
-  echo "____ Commited changes to ${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION} and Stopped container ${__CONTAINER_NAME}"
+  echo "____ Commited changes to '${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION}' and Stopped container '${__CONTAINER_NAME}'"
 
   if [[ ${__PUSH_TO_REMOTE_DOCKER_REPO} == ${__YES} ]]; then
 
@@ -187,9 +187,9 @@ if [[ $STS -eq ${__DONE} ]]; then
       "${__GIT_CLIENT_IMAGE_NAME}" \
       "${__GIT_CLIENT_IMAGE_VERSION}"
 
-    echo "____ Image tagged and pushed to repository as ${__DOCKER_REPOSITORY_HOST}/${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION}" 
+    echo "____ Image tagged and pushed to repository as '${__DOCKER_REPOSITORY_HOST}/${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION}'" 
   else
-    echo "____ On user request on user request image ${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION} has NOT been pushed to Docker repository ${__DOCKER_REPOSITORY_HOST}" 
+    echo "____ On user request on user request image '${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION}' has NOT been pushed to Docker repository '${__DOCKER_REPOSITORY_HOST}'" 
   fi
 else
   ${__INDUCE_ERROR}

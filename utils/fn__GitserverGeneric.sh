@@ -8,7 +8,7 @@
 [[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0"
 
 declare -ur fn__GitserverGeneric="1.0.1"
-fn__SourcedVersionOK "${0}" "${1:-0.0.0}" "${fn__GitserverGeneric}" || exit ${__EXECUTION_ERROR}
+fn__SourcedVersionOK "${0}" "${LINENO}" "${1:-0.0.0}" "${fn__GitserverGeneric}" || exit ${__EXECUTION_ERROR}
 
 
 [[ ${fn__DockerGeneric} ]] || source ./utils/fn__DockerGeneric.sh "1.0.0" || exit ${__EXECUTION_ERROR}
@@ -149,7 +149,7 @@ function fn__DoesRepoAlreadyExist() {
     }
 
   lCommandOutput=$( ${lCommand}) || {
-      echo "____ Failed to execute ${lCommand} - Status: $? - aborting"
+      echo "____ Failed to execute '${lCommand}' - Status: $? - aborting"
       exit
     }
 # echo "xxxxxx ${lCommandOutput}"
@@ -360,7 +360,7 @@ function fn__UpdateOwnershipOfNonRootUserResources() {
   chown -R ${pGitUsername}:${pGitUsername} ${pGuestHome}
   chown -R ${pGitUsername}:${pGitUsername} ${pGitReposRoot}
   "
-  echo "____ Updated ownership of ${pGitUsername} resources on ${pContainerName}"
+  echo "____ Updated ownership of '${pGitUsername}' resources on '${pContainerName}'"
 }
 
 

@@ -372,7 +372,7 @@ readonly __CWD_NAME=$(basename ${__DEBMIN_HOME})
 fn__SetEnvironmentVariables ## && STS=${__SUCCESS} || STS=${__FAILED} # let it fail 
 
 
-fn__ConfirmYN "Artefact location will be ${__DEBMIN_HOME} - Is this correct?" && true || {
+fn__ConfirmYN "Artefact location will be '${__DEBMIN_HOME}' - Is this correct?" && true || {
   echo -e "____ Aborting ...\n"
   exit ${__NO}
 }
@@ -381,11 +381,11 @@ fn__ConfirmYN "Artefact location will be ${__DEBMIN_HOME} - Is this correct?" &&
 fn__ContainerExists \
     "${__DEBMIN_PPROJECT_NAME}" && STS=0 || STS=1
 [[ $STS -eq ${__NO} ]] && {
-    echo "____ Container ${__DEBMIN_PPROJECT_NAME} does not exist or is not running!"; 
+    echo "____ Container '${__DEBMIN_PPROJECT_NAME} 'does not exist or is not running!"; 
     echo '____ Aborting ...'; 
     exit
 } || {
-    echo "____ Container ${__DEBMIN_PPROJECT_NAME} exists and is running"; 
+    echo "____ Container '${__DEBMIN_PPROJECT_NAME}' exists and is running"; 
 }
 
 

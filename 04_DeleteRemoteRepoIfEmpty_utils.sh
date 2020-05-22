@@ -8,7 +8,7 @@
 [[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__FAILED}
 
 declare -u _04_DeleteRemoteRepoIfEmpty_utils="1.0.0"
-fn__SourcedVersionOK "${0}" "${1:-0.0.0}" "${_04_DeleteRemoteRepoIfEmpty_utils}" || exit ${__FAILED}
+fn__SourcedVersionOK "${0}" "${LINENO}" "${1:-0.0.0}" "${_04_DeleteRemoteRepoIfEmpty_utils}" || exit ${__FAILED}
 
 [[ ${fn__UtilityGeneric} ]] || { source ./utils/fn__UtilityGeneric.sh "1.0.1" || exit ${__FAILED}; }
 

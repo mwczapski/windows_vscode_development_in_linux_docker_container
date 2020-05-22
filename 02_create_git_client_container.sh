@@ -188,21 +188,21 @@ fn__CreateDockerComposeFile \
   "${__CONTAINER_SOURCE_IMAGE_NAME}"  \
   "${__DEBMIN_HOME_WSD}/${__GIT_CLIENT_CONTAINER_NAME}/backups:${__GIT_CLIENT_GUEST_HOME}/backups" \
   "${__DOCKER_COMPOSE_FILE_WLS}"
-echo "____ Created ${__DOCKER_COMPOSE_FILE_WLS}"; 
+echo "____ Created '${__DOCKER_COMPOSE_FILE_WLS}'"; 
 
 
 fn__ImageExists \
   "${__CONTAINER_SOURCE_IMAGE_NAME}" \
-  && echo "____ Image ${__CONTAINER_SOURCE_IMAGE_NAME} exist" \
+  && echo "____ Image '${__CONTAINER_SOURCE_IMAGE_NAME}' exist" \
   || {
     echo "repo: ${__DOCKER_REPOSITORY_HOST}/${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION}"
     fn__PullImageFromRemoteRepository   \
       ${__DOCKER_REPOSITORY_HOST}  \
       ${__GIT_CLIENT_IMAGE_NAME} \
       ${__GIT_CLIENT_IMAGE_VERSION} \
-        && echo "____ Image ${__DOCKER_REPOSITORY_HOST}/${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION} pulled from remote docker repository" \
+        && echo "____ Image '${__DOCKER_REPOSITORY_HOST}/${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION}' pulled from remote docker repository" \
         || {
-          echo "____ Cannot find image ${__CONTAINER_SOURCE_IMAGE_NAME} [${__DOCKER_REPOSITORY_HOST}/${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION}]" 
+          echo "____ Cannot find image '${__CONTAINER_SOURCE_IMAGE_NAME}' ['${__DOCKER_REPOSITORY_HOST}/${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION}']" 
           echo "____ Aborting script execution ..." 
           exit ${__FAILED}
         }
@@ -225,9 +225,9 @@ if [[ $STS -eq ${__YES} ]]; then
 
     fn__StartContainer ${__GIT_CLIENT_CONTAINER_NAME} && STS=${__YES} || STS=${__NO}
     if [[ $STS -eq ${__DONE} ]]; then
-        echo "____ Container ${__GIT_CLIENT_CONTAINER_NAME} started"; 
+        echo "____ Container '${__GIT_CLIENT_CONTAINER_NAME}' started"; 
     else
-        echo "____ Failed to start container ${__GIT_CLIENT_CONTAINER_NAME} - investigate..."; 
+        echo "____ Failed to start container '${__GIT_CLIENT_CONTAINER_NAME}' - investigate..."; 
         exit ${__FAILED}
     fi
   fi
@@ -236,9 +236,9 @@ else
   
   fn_DockerComposeUpDetached "${__DOCKER_COMPOSE_FILE_DOS}" "${__GIT_CLIENT_CONTAINER_NAME}" && STS=${__DONE} || STS=${__FAILED}
   if [[ $STS -eq ${__DONE} ]]; then
-    echo "____ Container ${__GIT_CLIENT_CONTAINER_NAME} started"; 
+    echo "____ Container' ${__GIT_CLIENT_CONTAINER_NAME}' started"; 
   else
-    echo "____ Failed to start container ${__GIT_CLIENT_CONTAINER_NAME} - investigate"; 
+    echo "____ Failed to start container '${__GIT_CLIENT_CONTAINER_NAME}' - investigate"; 
     exit ${__FAILED}
   fi
 fi
@@ -252,7 +252,7 @@ fn__GenerateSSHKeyPairInClientContainer \
   "__GIT_CLIENT_ID_RSA_PUB_" \
     && STS=${__DONE} \
     || STS=${__FAILED}
-echo "____ Generated ${__GIT_CLIENT_GUEST_HOME}'s ssh keypair"; 
+echo "____ Generated '${__GIT_CLIENT_GUEST_HOME}' ssh keypair"; 
 
 
 fn__IntroduceRemoteClientToServerWithPublicKey \
@@ -298,10 +298,10 @@ fn__DoesRepoAlreadyExist \
 
   if [[ ${STS} -eq ${__YES} ]]
   then
-    echo "____ Git Repository ${__GIT_CLIENT_REMOTE_REPO_NAME} already exists - will skip creation steps"
+    echo "____ Git Repository '${__GIT_CLIENT_REMOTE_REPO_NAME}' already exists - will skip creation steps"
   elif [[ ${STS} -eq ${__EXECUTION_ERROR} ]]
   then
-    echo "____ Failed to determine whether Git Repository ${__GIT_CLIENT_REMOTE_REPO_NAME} already exists - will skip creation steps"
+    echo "____ Failed to determine whether Git Repository '${__GIT_CLIENT_REMOTE_REPO_NAME}' already exists - will skip creation steps"
   else
     fn__CreateNewClientGitRepositoryOnRemote \
       ${__GIT_CLIENT_REMOTE_REPO_NAME}  \
@@ -320,12 +320,12 @@ fn__DoesRepoAlreadyExist \
 
       if [[ ${STS} -eq ${__YES} ]]
       then
-        echo "____ Created remote repository ${__GIT_CLIENT_REMOTE_REPO_NAME}"
+        echo "____ Created remote repository '${__GIT_CLIENT_REMOTE_REPO_NAME}'"
       else
-        echo "____ Failed to create remote repository ${__GIT_CLIENT_REMOTE_REPO_NAME} - investigate"
+        echo "____ Failed to create remote repository '${__GIT_CLIENT_REMOTE_REPO_NAME}' - investigate"
       fi
     else
-      echo "____ Failed to create remote repository ${__GIT_CLIENT_REMOTE_REPO_NAME}"
+      echo "____ Failed to create remote repository '${__GIT_CLIENT_REMOTE_REPO_NAME}'"
     fi
   fi
 

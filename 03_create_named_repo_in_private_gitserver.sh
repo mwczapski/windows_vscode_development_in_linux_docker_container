@@ -108,15 +108,15 @@ fn__InputIsValid \
 declare lClientIdRSAPub=""
 lClientIdRSAPub=$(cat ${pClientIdRSAPubFilePath})
 [[ ${lClientIdRSAPub// */} == "ssh-rsa" ]] || {
-  echo "____ Public key in file ${pClientIdRSAPubFilePath} does not appear to be the RSA public key - aborting"
+  echo "____ Public key in file '${pClientIdRSAPubFilePath}' does not appear to be the RSA public key - aborting"
   exit ${__FAILED}
 }
 
 
 # confirm values
 #
-echo "____ Set to create remote git repository ${lCanonicalClientGitRemoteRepoName}" 
-echo "____ Set to use public key for ${lClientIdRSAPub//* /}" 
+echo "____ Set to create remote git repository '${lCanonicalClientGitRemoteRepoName}'" 
+echo "____ Set to use public key for '${lClientIdRSAPub//* /}'" 
 fn__ConfirmYN "Proceed?" && true || {
   echo "_____ Chose NO - Aborting ..."
   exit ${__FAILED}
@@ -142,13 +142,13 @@ fn__DoesRepoAlreadyExist \
   ${__GIT_USERNAME} \
   ${__GITSERVER_SHELL} \
     && {
-      echo "____ Git Repository ${lCanonicalClientGitRemoteRepoName} already exists - aborting"
+      echo "____ Git Repository '${lCanonicalClientGitRemoteRepoName}' already exists - aborting"
       exit
     } \
     || STS=$? # can be __NO (good) or __EXECUTION_ERROR (bad)
 
   [[ ${STS} -eq ${__EXECUTION_ERROR} ]] && {
-      echo "____ Failed to determine whether Git Repository ${lCanonicalClientGitRemoteRepoName} already exists - aborting"
+      echo "____ Failed to determine whether Git Repository '${lCanonicalClientGitRemoteRepoName}' already exists - aborting"
       exit 
   }
 
@@ -160,10 +160,10 @@ fn__CreateNewClientGitRepositoryOnRemote \
   ${__GITSERVER_SHELL} \
   ${__GITSERVER_REPOS_ROOT} \
     && {
-      echo "____ Created remote repository ${lCanonicalClientGitRemoteRepoName}"
+      echo "____ Created remote repository '${lCanonicalClientGitRemoteRepoName}'"
       exit ${__DONE}
     } \
     || {
-      echo "____ Failed to create remote repository ${lCanonicalClientGitRemoteRepoName}"
+      echo "____ Failed to create remote repository '${lCanonicalClientGitRemoteRepoName}'"
       exit ${__FAILED}
     }

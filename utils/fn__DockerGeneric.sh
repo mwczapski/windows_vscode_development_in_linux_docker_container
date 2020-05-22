@@ -7,7 +7,7 @@
 [[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 
 declare -r fn__DockerGeneric="1.0.0"
-fn__SourcedVersionOK "${0}" "${1:-0.0.0}" "${fn__DockerGeneric}" || exit ${__EXECUTION_ERROR}
+fn__SourcedVersionOK "${0}" "${LINENO}" "${1:-0.0.0}" "${fn__DockerGeneric}" || exit ${__EXECUTION_ERROR}
 
 
 readonly __DOCKER_NO_EXT="docker"
@@ -61,13 +61,13 @@ function fn__RunContainerDetached() {
 fn__ContainerExists ${__CONTAINER_NAME} && STS=0 || STS=1
 if [[ $STS -eq 0 ]]; then
 
-    echo "____ Container ${__CONTAINER_NAME} Exist - will start it"; 
+    echo "____ Container '${__CONTAINER_NAME}' Exist - will start it"; 
     fn__StartContainer ${__CONTAINER_NAME} && STS=0 || STS=1
 
     if [[ $STS -eq 0 ]]; then
-        echo "____ Container ${__CONTAINER_NAME} started"; 
+        echo "____ Container '${__CONTAINER_NAME}' started"; 
     else
-        echo "____ Failed to start container ${__CONTAINER_NAME} - investigate..."; 
+        echo "____ Failed to start container '${__CONTAINER_NAME}' - investigate..."; 
         exit;
     fi
 fi

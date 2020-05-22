@@ -6,11 +6,12 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
+[[ ${libSourceMgmt} ]] || source ./libs/libSourceMgmt.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 
 [[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 
 declare -u __env_devcicd_net="1.0.0"
-fn__SourcedVersionOK "${0}" "${1:-0.0.0}" "${__env_devcicd_net}" || exit ${__EXECUTION_ERROR}
+fn__SourcedVersionOK "${0}" "${LINENO}" "${1:-0.0.0}" "${__env_devcicd_net}" || exit ${__EXECUTION_ERROR}
 
 
 # change this if you want to create network with a different name
@@ -44,7 +45,7 @@ fn__DockerNetworkExists \
       ${__DEVCICD_SUBNET_ADDRESS} \
       ${__DEVCICD_SUBNET_GATEWAY} \
         || {
-          echo "____ Failed to create network ${__DEVCICD_NET}. Script cannot continue."
+          echo "____ Failed to create network '${__DEVCICD_NET}'. Script cannot continue."
           exit
         }
 

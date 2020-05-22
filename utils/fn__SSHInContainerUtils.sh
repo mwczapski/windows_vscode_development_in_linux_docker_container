@@ -8,7 +8,7 @@
 [[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 
 declare -ur fn__SSHInContainerUtils="1.0.0"
-fn__SourcedVersionOK "${0}" "${1:-0.0.0}" "${fn__SSHInContainerUtils}" || exit ${__EXECUTION_ERROR}
+fn__SourcedVersionOK "${0}" "${LINENO}" "${1:-0.0.0}" "${fn__SSHInContainerUtils}" || exit ${__EXECUTION_ERROR}
 
 # common environment variable values and utility functions
 #

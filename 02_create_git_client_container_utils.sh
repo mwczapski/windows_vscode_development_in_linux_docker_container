@@ -8,7 +8,7 @@
 [[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 
 declare -ur _02_create_git_client_container_utils="1.0.0"
-fn__SourcedVersionOK "${0}" "${1:-0.0.0}" "${_02_create_git_client_container_utils}" "1.0.0" || exit ${__EXECUTION_ERROR}
+fn__SourcedVersionOK "${0}" "${LINENO}" "${1:-0.0.0}" "${_02_create_git_client_container_utils}" "1.0.0" || exit ${__EXECUTION_ERROR}
 
 # common environment variable values and utility functions
 #
@@ -351,7 +351,7 @@ EOF
         || STS=${__DIFFERENT}
 
       if [[ ${STS} -eq ${__DIFFERENT} ]]; then
-        echo "____ docker-compose.yml_${pContainerName} changed - container may need updating"
+        echo "____ 'docker-compose.yml_${pContainerName}' changed - container may need updating"
       else
         rm -f ${pHostWSLPathToComposeFile}_${TS}
       fi
