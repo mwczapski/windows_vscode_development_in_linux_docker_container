@@ -24,6 +24,46 @@ fn__SourcedVersionOK "${0}" "${LINENO}" "${1:-0.0.0}" "${_02_create_git_client_c
 ## ############################################################
 
 
+
+:<<-'------------Function_Usage_Note-------------------------------'
+  Usage:
+    fn_IncludePrivateGitServerSupport \
+      "${*}"
+  Returns:
+    ${__EXECUTION_ERROR}
+    ${__NO} if command line argument is not provided or it's value does not match the expectation
+    ${__YES} if command line argument is provided and matches the expectation
+  Example:
+    fn_IncludePrivateGitServerSupport "${*}" && echo "Yes, include" || echo "No, don't include"
+------------Function_Usage_Note-------------------------------
+fn_IncludePrivateGitServerSupport() {
+  local -r prCmdArguments="${1}"
+  local -r lrOptionValue=":g:"    # provide a single option, possible prefixed with : and possibly suffixed with : if option value is required
+  local lOutputString=""
+  fn__GetOptionValue "${lrOptionValue}" "${prCmdArguments}" "lOutputString" && STS=${?} || STS=${?}
+
+  case ${STS} in
+    ${__EXECUTION_ERROR} | ${__EMPTY_ARGUMENT_NOT_ALLOWED})
+      echo "Execution error - check logic" >&2
+      return ${__EXECUTION_ERROR};
+      ;;
+    ${__NO})
+      return ${__NO}
+      ;;
+    *)
+      # only want the first letter of the string following the -f flag
+      # and only care about Y - everything else is a ${__NO}
+      local -r _OPT_VAL_=${lOutputString^^}
+      [[ ${_OPT_VAL_:0:1} == "Y" ]] \
+        && return ${__YES} \
+        || return ${__NO}
+      ;;
+  esac
+}
+
+
+
+
 :<<-'COMMENT--fn__GetProjectName-----------------------------------------'
   Usage:
     fn__GetProjectName

@@ -16,8 +16,6 @@ fn__SourcedVersionOK "${0}" "${LINENO}" "${1:-0.0.0}" "${_04_DeleteRemoteRepoIfE
 
 
 
-
-
 :<<-'------------Function_Usage_Note-------------------------------'
   Usage:
     fn__ForceRemoveRemoteRepo \
@@ -46,7 +44,7 @@ fn__ForceRemoveRemoteRepo() {
     *)
       # only want the first letter of the string following the -f flag
       # and only care aboiut Y - everything else is a ${__NO}
-      local -r _OPT_VAL_=${lrefOutputString^^}
+      local -r _OPT_VAL_=${lOutputString^^}
       [[ ${_OPT_VAL_:0:1} == "Y" ]] \
         && return ${__YES} \
         || return ${__NO}
