@@ -56,11 +56,7 @@ fn__SourcedVersionOK() {
   then
     local -i x=$((${i} - 2))
     lImmadiateCaller="${BASH_SOURCE[${x}]}.${FUNCNAME[${x}]}"
-    # lImmadiateCaller=${lImmadiateCaller//.source/}
-    # x=$((${i} - 3))
-    # lImmadiateCaller="${lImmadiateCaller}-${BASH_SOURCE[${x}]}.${FUNCNAME[${x}]}"
-    # # lImmadiateCaller=${lImmadiateCaller//.source/}
-    # # lImmadiateCaller=${lImmadiateCaller//??utils?/ }
+    lImmadiateCaller=${lImmadiateCaller//.source/}
   fi
 
   if [[ ${liExpectedNum} -le ${liActualNum} ]]
