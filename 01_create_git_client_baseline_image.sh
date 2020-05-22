@@ -31,6 +31,9 @@ trap traperr ERR
 [[ ${fn__UtilityGeneric} ]] || source ./utils/fn__UtilityGeneric.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 [[ ${fn__GitserverGeneric} ]] || source ./utils/fn__GitserverGeneric.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 [[ ${fn__CreateWindowsShortcut} ]] || source ./utils/fn__CreateWindowsShortcut.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${_02_create_git_client_container_utils} ]] || source ./02_create_git_client_container_utils.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+
+
 
 # functions specific to this script - separated to facilitate  unit testing 
 #
@@ -45,6 +48,7 @@ trap traperr ERR
 
 # is there a command line argument that asks for the image to be uploaded ot the remote docker repository?
 
+
 # confirm working directory and push image to remote repository
 #
 if [[ "$(echo $(basename $(pwd)))" != "${__SCRIPTS_DIRECTORY_NAME}" ]]
@@ -55,29 +59,9 @@ then
 fi
 
 
-__DEBMIN_HOME=$(pwd | sed 's|/${__SCRIPTS_DIRECTORY_NAME}||')
+__DEBMIN_HOME=$(pwd)
  
-
-fn__ConfirmYN "Artifacts location will be '${__DEBMIN_HOME}' - Is this correct?" && true || {
-  echo "____ Aborting ..."
-  exit ${__NO}
-}
-echo "____ Artifacts location confirmed as '${__DEBMIN_HOME}'"
-
-
-fn__ConfirmYN "Push of the image to the remote Docker repository?" && STS=$? || STS=$?
-readonly __PUSH_TO_REMOTE_DOCKER_REPO=${STS}
-echo "____ Push of the image to the remote Docker repository has $([[ ${__PUSH_TO_REMOTE_DOCKER_REPO} -eq ${__NO} ]] && echo "NOT ")been requested."
-
-
-# fn__SetEnvironmentVariables \
-#   ${__DEBMIN_HOME} \
-#   "bitnami/minideb:jessie" \
-#   ${__GIT_CLIENT_SHELL_GLOBAL_PROFILE} \
-#   ${__GIT_CLIENT_IMAGE_NAME} 
-# echo "____ Set environment variables" 
-
-fn__SetEnvironmentVariables \
+ fn__SetEnvironmentVariables \
   "${__SCRIPTS_DIRECTORY_NAME}" \
   "${__GIT_CLIENT_IMAGE_NAME}"  \
   "${__GITSERVER_SHELL_GLOBAL_PROFILE}"  \
@@ -87,11 +71,35 @@ fn__SetEnvironmentVariables \
   "__DOCKERFILE_PATH"  \
   "__REMOVE_CONTAINER_ON_STOP"  \
   "__NEEDS_REBUILDING" ## && STS=${__SUCCESS} || STS=${__FAILED} # let it abort if failed and investigate
-echo "_____ Set environment variables" 
+echo "____ Set environment variables" 
 
-# 
+
+fn__ImageExists \
+  "${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION}" && __IMAGE_EXISTS=${__YES} || __IMAGE_EXISTS=${__NO}
+[[ ${__IMAGE_EXISTS} -eq ${__YES} ]]  \
+  && {
+    echo "____ Image '${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION}' already exists - aborting"
+    exit ${__FAILED}
+  } \
+  || {
+    echo "____ Image '${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION}' does not exist"
+    __REBUILD_IMAGE=${__YES}
+  }
+
+
+fn__ConfirmYN "Artifacts location will be '${__DEBMIN_HOME}' - Is this correct?" && true || {
+  echo "____ Aborting ..."
+  exit ${__NO}
+}
+echo "____ Artifacts location confirmed as '${__DEBMIN_HOME}'"
+
+
+
+fn__ConfirmYN "Push of the image to the remote Docker repository?" && STS=$? || STS=$?
+readonly __PUSH_TO_REMOTE_DOCKER_REPO=${STS}
+echo "____ Push of the image to the remote Docker repository has $([[ ${__PUSH_TO_REMOTE_DOCKER_REPO} -eq ${__NO} ]] && echo "NOT ")been requested."
+
 cd ${__DEBMIN_HOME}
-
 
 fn__Create_docker_entry_point_file \
   ${__DEBMIN_HOME} \
@@ -136,30 +144,46 @@ if [[ ${__REBUILD_IMAGE} -eq ${__YES} ]]; then
 fi
 
 
+# Returns:
+#   __SUCCESS and the chosen name in populated lClientContainerName
+#   __FAILED if there were insufficient arguments
+#   Script abort if all opportunities to choose a container name were exhausted
+declare lClientContainerName="${__GIT_CLIENT_CONTAINER_NAME}"
+fn__GetClientContainerName \
+  "__DEBMIN_HOME"  \
+  "lClientContainerName" && STS=$? || STS=$?
+
+test ${STS} -eq ${__SUCCESS} || {
+    echo "____ ${STS}:${lClientContainerName}"
+  } && {
+    echo "____ ${STS}:${lClientContainerName}"
+  }
+
+
 fn__ContainerExists \
-  ${__GIT_CLIENT_CONTAINER_NAME} \
+  ${lClientContainerName} \
     && STS=${__YES} \
     || STS=${__NO}
 
 if [[ $STS -eq ${__YES} ]]; then
 
-  echo "____ Container '${__GIT_CLIENT_CONTAINER_NAME}' exists - will stop and remove"
+  echo "____ Container '${lClientContainerName}' exists - will stop and remove"
 
   fn__StopAndRemoveContainer  \
-    ${__GIT_CLIENT_CONTAINER_NAME} \
+    ${lClientContainerName} \
       && STS=${__YES} \
       || STS=${__NO}
 
-  echo "____ Container '${__GIT_CLIENT_CONTAINER_NAME}' stopped and removed"
+  echo "____ Container '${lClientContainerName}' stopped and removed"
 else
-  echo "____ Container '${__GIT_CLIENT_CONTAINER_NAME}' does not exist"
+  echo "____ Container '${lClientContainerName}' does not exist"
 fi
 
 
 fn__RunContainerDetached \
   ${__GIT_CLIENT_IMAGE_NAME} \
   ${__GIT_CLIENT_IMAGE_VERSION} \
-  ${__GIT_CLIENT_CONTAINER_NAME} \
+  ${lClientContainerName} \
   ${__GIT_CLIENT_HOST_NAME} \
   ${__REMOVE_CONTAINER_ON_STOP} \
   ${__EMPTY} \
@@ -168,12 +192,12 @@ fn__RunContainerDetached \
     STS=${__FAILED}
    
 
-[[ $STS -eq ${__DONE} ]] && echo "____ Container '${__GIT_CLIENT_CONTAINER_NAME}'started"
+[[ $STS -eq ${__DONE} ]] && echo "____ Container '${lClientContainerName}'started"
 
 if [[ $STS -eq ${__DONE} ]]; then
 
   fn__CommitChangesStopContainerAndSaveImage   \
-    "${__GIT_CLIENT_CONTAINER_NAME}" \
+    "${lClientContainerName}" \
     "${__GIT_CLIENT_IMAGE_NAME}" \
     "${__GIT_CLIENT_IMAGE_VERSION}"
   echo "____ Commited changes to '${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION}' and Stopped container '${__CONTAINER_NAME}'"

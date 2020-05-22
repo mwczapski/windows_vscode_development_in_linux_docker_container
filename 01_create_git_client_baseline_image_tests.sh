@@ -135,7 +135,7 @@ then
     expectedStringResult="${__INSUFFICIENT_ARGS}"
     expectedStatusResult=${__FAILED}
     actualStringResult=$( ${functionName} ${functionInputs} ) && actualStatusResult=$? || actualStatusResult=$? 
-    # [[ ${actualStringResult} ]] && echo "________ ${LINENO}: ${functionName}: ${actualStringResult}" 
+    # [[ ${actualStringResult} ]] && echo "_______ ${LINENO}: ${functionName}: ${actualStringResult}" 
 
     assessReturnStatusAndStdOut \
       "${functionName}" \
@@ -155,7 +155,7 @@ then
     expectedStringResult="${__INSUFFICIENT_ARGS}"
     expectedStatusResult=${__FAILED}
     actualStringResult=$( ${functionName} ${functionInputs} ) && actualStatusResult=$? || actualStatusResult=$? 
-    # [[ ${actualStringResult} ]] && echo "________ ${LINENO}: ${functionName}: ${actualStringResult}" 
+    # [[ ${actualStringResult} ]] && echo "_______ ${LINENO}: ${functionName}: ${actualStringResult}" 
 
     assessReturnStatusAndStdOut \
       "${functionName}" \
@@ -178,7 +178,7 @@ then
       expectedStatusResult=${__SUCCESS}
       expectedContentSameResult=${__NO}
       actualStringResult=$( ${functionName} ${functionInputs} ) && actualStatusResult=$? || actualStatusResult=$? 
-      [[ ${actualStringResult} ]] && echo "________ ${LINENO}: ${functionName}: ${actualStringResult}" 
+      [[ ${actualStringResult} ]] && echo "_______ ${LINENO}: ${functionName}: ${actualStringResult}" 
       actualStringResult=${actualStringResult:0:${#expectedStringResult}}
 
       assessReturnStatusAndStdOut \
@@ -252,7 +252,7 @@ then
     expectedStatusResult=${__FAILED}
     actualStringResult=$( ${functionName} ${functionInputs} ) && actualStatusResult=$? || actualStatusResult=$? 
     actualStringResult=${actualStringResult:0:${#expectedStringResult}}
-    # [[ ${actualStringResult} ]] && echo "________ ${LINENO}: ${functionName}: ${actualStringResult}" 
+    # [[ ${actualStringResult} ]] && echo "_______ ${LINENO}: ${functionName}: ${actualStringResult}" 
 
     assessReturnStatusAndStdOut \
       "${functionName}" \
@@ -371,7 +371,7 @@ _RUN_TEST_SET_=${__YES}
 if [[ ${_RUN_TEST_SET_} -eq ${__YES} || ${_FORCE_RUNNING_ALL_TESTS_} ]]
 then
 
-  testIntent="${functionName} will return __FAILED and '______ Insufficient number of arguments'"
+  testIntent="${functionName} will return __FAILED and '_____ Insufficient number of arguments'"
   function fn__SetEnvironmentVariables_test_001 {
 
     expectedStringResult="____ Insufficient number of arguments"

@@ -120,7 +120,7 @@ lClientIdRSAPub=$(cat ${pClientIdRSAPubFilePath})
 echo "____ Set to create remote git repository '${lCanonicalClientGitRemoteRepoName}'" 
 echo "____ Set to use public key for '${lClientIdRSAPub//* /}'" 
 fn__ConfirmYN "Proceed?" && true || {
-  echo "_____ Chose NO - Aborting ..."
+  echo "____ Chose NO - Aborting ..."
   exit ${__FAILED}
 }
 

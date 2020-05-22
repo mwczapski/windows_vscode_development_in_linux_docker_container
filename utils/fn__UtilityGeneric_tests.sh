@@ -147,7 +147,7 @@ then
   fn__IsValidRegEx_test_004
 
 
-  testIntent="${functionName} will return __FAILED and '______ Alleged regular expression '[a-z' must start with [ and end with ]'"
+  testIntent="${functionName} will return __FAILED and '_____ Alleged regular expression '[a-z' must start with [ and end with ]'"
   function fn__IsValidRegEx_test_005 {
     local -r lrRegEx="[a-z"
 
@@ -170,7 +170,7 @@ then
   fn__IsValidRegEx_test_005
 
 
-  testIntent="${functionName} will return __FAILED and '______ Alleged regular expression 'a-z]' must start with [ and end with ]'"
+  testIntent="${functionName} will return __FAILED and '_____ Alleged regular expression 'a-z]' must start with [ and end with ]'"
   function fn__IsValidRegEx_test_006 {
     local -r lrRegEx="a-z]"
 
@@ -193,7 +193,7 @@ then
   fn__IsValidRegEx_test_006
 
 
-  testIntent="${functionName} will return __FAILED and '______ Alleged regular expression 'a-z' must start with [ and end with ]'"
+  testIntent="${functionName} will return __FAILED and '_____ Alleged regular expression 'a-z' must start with [ and end with ]'"
   function fn__IsValidRegEx_test_007 {
     local -r lrRegEx="a-z"
 
@@ -216,7 +216,7 @@ then
   fn__IsValidRegEx_test_007
 
 
-  testIntent="${functionName} will return __FAILED and '______ Alleged regular expression 'a-' must be at least 3 characters long'"
+  testIntent="${functionName} will return __FAILED and '_____ Alleged regular expression 'a-' must be at least 3 characters long'"
   function fn__IsValidRegEx_test_008 {
     local -r lrRegEx="a-"
 
@@ -330,7 +330,7 @@ _RUN_TEST_SET_=${__NO}
 if [[ ${_RUN_TEST_SET_} -eq ${__YES} || ${_FORCE_RUNNING_ALL_TESTS_} ]]
 then
 
-  testIntent="${functionName} function will return __FAILED and '______ Requires shell regex to use to determine valid characters and eliminate all that do not match'"
+  testIntent="${functionName} function will return __FAILED and '_____ Requires shell regex to use to determine valid characters and eliminate all that do not match'"
   function fn__SanitizeInput_test_001 {
 
     expectedStringResult="____ Requires shell regex to use to determine valid characters and eliminate all that do not match"
@@ -351,7 +351,7 @@ then
   fn__SanitizeInput_test_001
 
 
-  testIntent="${functionName} function will return __FAILED and '______ Require string to sanitize'"
+  testIntent="${functionName} function will return __FAILED and '_____ Require string to sanitize'"
   function fn__SanitizeInput_test_002 {
     local -r lrRegEx="[a-zA-Z]"
 
@@ -532,7 +532,7 @@ _RUN_TEST_SET_=${__NO}
 if [[ ${_RUN_TEST_SET_} -eq ${__YES} || ${_FORCE_RUNNING_ALL_TESTS_} ]]
 then
 
-  testIntent="${functionName} function will return __FAILED and '______ Require string which to sanitize'"
+  testIntent="${functionName} function will return __FAILED and '_____ Require string which to sanitize'"
   function fn__SanitizeInputAlphaNum_test_001 {
 
     expectedStringResult="____ Require string which to sanitize"
@@ -640,7 +640,7 @@ _RUN_TEST_SET_=${__NO}
 if [[ ${_RUN_TEST_SET_} -eq ${__YES} || ${_FORCE_RUNNING_ALL_TESTS_} ]]
 then
 
-  testIntent="${functionName} function will return __FAILED and '______ Require string which to sanitize'"
+  testIntent="${functionName} function will return __FAILED and '_____ Require string which to sanitize'"
   function fn__SanitizeInputAlpha_test_001 {
 
     expectedStringResult="____ Require string which to sanitize"
@@ -748,7 +748,7 @@ _RUN_TEST_SET_=${__NO}
 if [[ ${_RUN_TEST_SET_} -eq ${__YES} || ${_FORCE_RUNNING_ALL_TESTS_} ]]
 then
 
-  testIntent="${functionName} function will return __FAILED and '______ Require string which to sanitize'"
+  testIntent="${functionName} function will return __FAILED and '_____ Require string which to sanitize'"
   function fn__SanitizeInputNumeric_test_001 {
 
     expectedStringResult="____ Require string which to sanitize"
@@ -860,7 +860,7 @@ then
 
   mkdir -p ${_TEMP_DIR_}
 
-  testIntent="${functionName} function will return __FAILED and '______ Insufficient number of arguments'"
+  testIntent="${functionName} function will return __FAILED and '_____ Insufficient number of arguments'"
   function fn__FileSameButForDate_test_000 {
 
     expectedStringResult="____ Insufficient number of arguments"
@@ -881,7 +881,7 @@ then
   fn__FileSameButForDate_test_000
 
 
-  testIntent="${functionName} function will return __FAILED and '______ Insufficient number of arguments'"
+  testIntent="${functionName} function will return __FAILED and '_____ Insufficient number of arguments'"
   function fn__FileSameButForDate_test_001 {
     local -r lrFirstFilePath="${_TEMP_DIR_}/tmp_first_file"
 

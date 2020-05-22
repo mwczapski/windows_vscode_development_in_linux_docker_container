@@ -6,7 +6,7 @@
 # #############################################
 
 declare -u __env_gitserverConstants="1.0.0"
-fn__SourcedVersionOK "${0}" "${LINENO}" "${1:-0.0.0}" "${__env_gitserverConstants}" || exit ${__EXECUTION_ERROR}
+fn__SourcedVersionOK "${0}" "${LINENO}" "${1:-"0.0.0"}" "${__env_gitserverConstants}" || exit ${__EXECUTION_ERROR}
 
 [[ ${__env_devcicd_net} ]] || source ./utils/__env_devcicd_net.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 

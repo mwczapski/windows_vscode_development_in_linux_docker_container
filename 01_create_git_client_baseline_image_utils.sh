@@ -9,7 +9,7 @@
 
 [[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 
-declare -ur _01_create_git_client_baseline_image_utils
+declare -ur _01_create_git_client_baseline_image_utils="1.0.0"
 fn__SourcedVersionOK "${0}" "${LINENO}" "${1:-0.0.0}" "${_01_create_git_client_baseline_image_utils}" || exit ${__EXECUTION_ERROR}
 
 # common environment variable values and utility functions

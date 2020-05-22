@@ -174,7 +174,7 @@ function fn__GetClientContainerName() {
   fn__ConfirmYN "Use project directory-derived name '${lDerivedContainerName}' as container name? " && STS=${__YES} || STS=${__NO}
   if [[ ${STS} -eq ${__YES} ]] 
   then
-    __GIT_CLIENT_CONTAINER_NAME=${lDerivedContainerName}
+    inout__GIT_CLIENT_CONTAINER_NAME=${lDerivedContainerName}
     return ${__YES}
   fi
 
