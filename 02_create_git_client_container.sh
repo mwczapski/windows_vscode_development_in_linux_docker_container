@@ -187,6 +187,7 @@ echo "____ Will $([[ ${_CREATE_WINDOWS_SHORTCUTS_} == ${__NO} ]] && echo "NOT ")
 fn__CreateDockerComposeFile \
   "${__GIT_CLIENT_CONTAINER_NAME}"  \
   "${__GIT_CLIENT_HOST_NAME}"  \
+  "${__GIT_CLIENT_USERNAME}"  \
   "${__DEVCICD_NET}"  \
   "${__CONTAINER_SOURCE_IMAGE_NAME}"  \
   "${__DEBMIN_HOME_WSD}/${__GIT_CLIENT_CONTAINER_NAME}/backups:${__GIT_CLIENT_GUEST_HOME}/backups" \

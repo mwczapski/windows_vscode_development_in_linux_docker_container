@@ -328,29 +328,32 @@ echo ${out__GIT_CLIENT_REMOTE_REPO_NAME}
   return ${__YES}
 }
 
-
+# https://code.visualstudio.com/docs/remote/containers-advanced
+#
 function fn__CreateDockerComposeFile() {
   local -r lUsage='
   Usage: 
     fn__CreateDockerComposeFile \
       "${__GIT_CLIENT_CONTAINER_NAME}"  \
       "${__GIT_CLIENT_HOST_NAME}"  \
+      "${__GIT_CLIENT_USERNAME}"  \
       "${__DEVCICD_NET_DC_INTERNAL}"  \
       "${__CONTAINER_SOURCE_IMAGE_NAME}"  \
       "${__DEBMIN_HOME_DOS}:${__GIT_CLIENT_GUEST_HOME}" \
       "${__DOCKER_COMPOSE_FILE_WLS}"
     '
-  [[ $# -lt  5 || "${0^^}" == "HELP" ]] && {
+  [[ $# -lt 7 || "${0^^}" == "HELP" ]] && {
     echo -e "${__INSUFFICIENT_ARGS}\n${lUsage}"
     return ${__FAILED}
   }
   
   local -r pContainerName=${1?"Container Name to be assigned to the container"}
   local -r pHostName=${2?"Host Name to be assigned to the container instance"}
-  local -r pNetworkName=${3?"Network Name to be used for this container"}
-  local -r pSourceImageNameString=${4?"Full Image String naming the image on which to base the container"}
-  local -r pHostBoundVolumeString=${5?"Complete expression defining the host directory to map to container directory"}
-  local -r pHostWSLPathToComposeFile=${6?"Host directory to which to write docker-compose.yml file"}
+  local -r pGitClientUsername=${3?"Username to be assigned to the container"}
+  local -r pNetworkName=${4?"Network Name to be used for this container"}
+  local -r pSourceImageNameString=${5?"Full Image String naming the image on which to base the container"}
+  local -r pHostBoundVolumeString=${6?"Complete expression defining the host directory to map to container directory"}
+  local -r pHostWSLPathToComposeFile=${7?"Host directory to which to write docker-compose.yml file"}
 
   local -r lNodeModuleAnonVolume=${pHostBoundVolumeString##*:}
 
@@ -372,6 +375,7 @@ services:
         tty: true         # these two keep the container running even if there is no listener in the foreground
         stdin_open: true
 
+        user: ${pGitClientUsername}
         hostname: ${pHostName}
         volumes:
             - "/var/run/docker.sock:/var/run/docker.sock"
