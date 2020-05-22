@@ -45,7 +45,7 @@ fn__ForceRemoveRemoteRepo() {
       # only want the first letter of the string following the -f flag
       # and only care aboiut Y - everything else is a ${__NO}
       local -r _OPT_VAL_=${lOutputString^^}
-      [[ ${_OPT_VAL_:0:1} == "Y" ]] \
+      [[ "${_OPT_VAL_:0:1}" == "Y" ]] \
         && return ${__YES} \
         || return ${__NO}
       ;;

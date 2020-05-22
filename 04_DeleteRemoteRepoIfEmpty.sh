@@ -49,6 +49,7 @@ fn__GetProjectName \
     exit ${__FAILED}
   }
 
+
 declare pClientGitRemoteRepoName=""
 fn__GetRemoteGitRepoName \
   ${lCWDCumProjectName}  \
@@ -105,7 +106,7 @@ fn__DoesRepoAlreadyExist \
       echo "____ Git Repository '${lCanonicalClientGitRemoteRepoName}' does not exists"
       exit ${__FAILED}
   }
-echo "____ Repository '${lCanonicalCanonicalClientGitRemoteRepoName}' exists"
+echo "____ Repository '${lCanonicaClientGitRemoteRepoName}' exists"
  
 
 fn__IsRepositoryEmpty \
@@ -117,16 +118,15 @@ fn__IsRepositoryEmpty \
 
 if [[ $STS -eq ${__NO} ]]
 then
-  fn__ForceRemoveRemoteRepo "${*}" \
-    && {
-      echo "____ Repository '${lCanonicalClientGitRemoteRepoName}' is not empty - can't delete it using this method - please see server administrator"
-      echo "____ (${LINENO}) Aborting ..."
-      exit ${__FAILED}
-    } || {
-      echo "No, don't force" >/dev/null
-    }
+  if fn__ForceRemoveRemoteRepo "${*}" 
+  then
+    echo "____ Non-empty repository '${lCanonicalClientGitRemoteRepoName}' will be deleted"
+  else
+    echo "____ Repository '${lCanonicalClientGitRemoteRepoName}' is not empty - can't delete it using this method - please see server administrator"
+    echo "____ (${LINENO}) Aborting ..."
+    exit ${__FAILED}
+  fi
 fi
-echo "____ Repository '${lCanonicalClientGitRemoteRepoName}' will be deleted"
 
 fn__DeleteRemoteRepository \
   ${lCanonicalClientGitRemoteRepoName}  \
