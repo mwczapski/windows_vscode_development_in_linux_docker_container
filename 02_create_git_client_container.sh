@@ -167,12 +167,13 @@ cd ${__DEBMIN_HOME}
 fn__GetClientContainerName  \
   "__DEBMIN_HOME" \
   "__GIT_CLIENT_CONTAINER_NAME" && STS=$? || STS=$?
-if [[ ${STS} -ne ${__SUCCESS} ]]
-then
-  echo "____ Failed to choose container name."
-  echo "____ Aborting ..."
-  exit ${__FAILED}
-fi
+
+  if [[ ${STS} -ne ${__SUCCESS} ]]
+  then
+    echo "____ Failed to choose container name."
+    echo "____ Aborting ..."
+    exit ${__FAILED}
+  fi
 echo "____ Using '${__GIT_CLIENT_CONTAINER_NAME}' as Container Name and Host Name"
 
 __GIT_CLIENT_HOST_NAME=${__GIT_CLIENT_CONTAINER_NAME}
@@ -198,6 +199,7 @@ fn__ImageExists \
   && echo "____ Image '${__CONTAINER_SOURCE_IMAGE_NAME}' exist" \
   || {
     echo "repo: ${__DOCKER_REPOSITORY_HOST}/${__GIT_CLIENT_IMAGE_NAME}:${__GIT_CLIENT_IMAGE_VERSION}"
+
     fn__PullImageFromRemoteRepository   \
       ${__DOCKER_REPOSITORY_HOST}  \
       ${__GIT_CLIENT_IMAGE_NAME} \
@@ -248,6 +250,7 @@ fi
 
 if [[ ${__INCLUDE_PRIVATE_GIT_SERVER_SUPPORT} == true ]]
 then
+
   declare __GIT_CLIENT_ID_RSA_PUB_=""
   fn__GenerateSSHKeyPairInClientContainer \
     ${__GIT_CLIENT_CONTAINER_NAME} \
