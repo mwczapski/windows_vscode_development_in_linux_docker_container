@@ -17,6 +17,8 @@ traperr() {
 set -o errtrace
 trap traperr ERR
 
+[[ ${libSourceMgmt} ]] || source ./libs/libSourceMgmt.sh "1.0.0"
+
 [[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__FAILED}
 
 declare -u _06_set_up_container_for_remote_dev="1.0.0"
@@ -363,7 +365,7 @@ Usage:
 #
 __DEBMIN_HOME=$(pwd)
 readonly __CWD_NAME=$(basename ${__DEBMIN_HOME})
-[[ "${__CWD_NAME}" == "_commonUtils" ]] || {
+[[ "${__CWD_NAME}" == "${__SCRIPTS_DIRECTORY_NAME}" ]] || {
   echo "${0} must run from directory with name _commonUtils and will use the name of its parent directory as project directory"
   exit ${__NO}
 }

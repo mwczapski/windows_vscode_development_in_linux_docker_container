@@ -12,7 +12,7 @@
 [[ ${__YES} ]] || readonly __YES=${__ZERO__}
 [[ ${__NO} ]] || readonly __NO=${__ONE__}
 
-[[ ${libSourceMgmt} ]] || source ./libs/libSourceMgmt.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${libSourceMgmt} ]] || source ./libs/libSourceMgmt.sh "1.0.0"
 
 declare -r __env_GlobalConstants="1.0.0"
 fn__SourcedVersionOK "${0}" "${LINENO}" "${1:-0.0.0}" "${__env_GlobalConstants}" || exit ${__EXECUTION_ERROR}

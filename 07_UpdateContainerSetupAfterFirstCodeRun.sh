@@ -11,6 +11,8 @@ traperr() {
 set -o errtrace
 trap traperr ERR
 
+[[ ${libSourceMgmt} ]] || source ./libs/libSourceMgmt.sh "1.0.0"
+
 [[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__FAILED}
 
 # source ./utils/__env_YesNoSuccessFailureContants.sh
@@ -32,14 +34,14 @@ trap traperr ERR
 #
 __DEBMIN_HOME=$(pwd)
 readonly __CWD_NAME=$(basename ${__DEBMIN_HOME})
-[[ "${__CWD_NAME}" == "_commonUtils" ]] || {
+[[ "${__CWD_NAME}" == "${__SCRIPTS_DIRECTORY_NAME}" ]] || {
   echo "${0} must run from directory with name _commonUtils and will use the name of its parent directory as project directory"
   exit
 }
 
 cd ${__DEBMIN_HOME}
 
-__DEBMIN_HOME=${__DEBMIN_HOME%%/_commonUtils} # strip _commonUtils
+__DEBMIN_HOME=${__DEBMIN_HOME%%/${__SCRIPTS_DIRECTORY_NAME}} # strip _commonUtils
 __DEBMIN_HOME_DOS=$(fn__WSLPathToRealDosPath ${__DEBMIN_HOME})
 __DEBMIN_HOME_WSD=$(fn__WSLPathToWSDPath ${__DEBMIN_HOME})
 

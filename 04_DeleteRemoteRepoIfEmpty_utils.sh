@@ -5,6 +5,8 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
+[[ ${libSourceMgmt} ]] || source ./libs/libSourceMgmt.sh "1.0.0"
+
 [[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__FAILED}
 
 declare -u _04_DeleteRemoteRepoIfEmpty_utils="1.0.0"

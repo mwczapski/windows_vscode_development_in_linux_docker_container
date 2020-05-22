@@ -19,6 +19,8 @@ trap traperr ERR
 # common environment variable values and utility functions
 # are sourced conditionally - if they were not sourced earlier
 #
+[[ ${libSourceMgmt} ]] || source ./libs/libSourceMgmt.sh "1.0.0"
+
 [[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 
 [[ ${fn__DockerGeneric} ]] || source ./utils/fn__DockerGeneric.sh "1.0.0" || exit ${__EXECUTION_ERROR}
@@ -45,12 +47,12 @@ trap traperr ERR
 ## ##################################################################################
 
 # confirm project directory
-# /mnt/x/dir1/dir2/..dirn/projectDir/_commonUtils/02_create_node13131_container
+# /mnt/x/dir1/dir2/..dirn/projectDir/_commonUtils/02_create_git_client_container.sh
 #
 declare __DEBMIN_HOME=$(pwd)
 fn__GetProjectDirectory \
   "__DEBMIN_HOME" || {
-    echo "${0}:${LINENO} must run from directory with name _commonUtils and will use the name of its parent directory as project directory."
+    echo "${0}:${LINENO} must run from directory with name ${__SCRIPTS_DIRECTORY_NAME} and will use the name of its parent directory as project directory."
     exit ${__FAILED}
   }
 

@@ -17,9 +17,7 @@ traperr() {
 set -o errtrace
 trap traperr ERR
 
-savedPS4=${PS4}
-export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
-
+[[ ${libSourceMgmt} ]] || source ./libs/libSourceMgmt.sh "1.0.0"
 
 [[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 
@@ -49,7 +47,7 @@ export PS4='+(${BASH_SOURCE}:${LINENO}): ${FUNCNAME[0]:+${FUNCNAME[0]}(): }'
 
 # confirm working directory and push image to remote repository
 #
-if [[ "$(echo $(basename $(pwd)))" != "_commonUtils" ]]
+if [[ "$(echo $(basename $(pwd)))" != "${__SCRIPTS_DIRECTORY_NAME}" ]]
 then
   echo "____ Script '${0}' is expected to be located in, and run from the directory named '${__SCRIPTS_DIRECTORY_NAME}' "
   echo "____ Aborting ..."
@@ -57,7 +55,7 @@ then
 fi
 
 
-__DEBMIN_HOME=$(pwd | sed 's|/_commonUtils||')
+__DEBMIN_HOME=$(pwd | sed 's|/${__SCRIPTS_DIRECTORY_NAME}||')
  
 
 fn__ConfirmYN "Artifacts location will be '${__DEBMIN_HOME}' - Is this correct?" && true || {
