@@ -12,13 +12,9 @@ set -o errtrace
 trap traperr ERR
 
 [[ ${libSourceMgmt} ]] || source ./libs/libSourceMgmt.sh "1.0.0"
-
-[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__FAILED}
-
-# source ./utils/__env_YesNoSuccessFailureContants.sh
-# source ./utils/fn__WSLPathToDOSandWSDPaths.sh
-# source ./utils/fn__ConfirmYN.sh
-# source ./utils/fn__CreateWindowsShortcut.sh
+[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${fn__WSLPathToDOSandWSDPaths} ]] || source ./utils/fn__WSLPathToDOSandWSDPaths.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${fn__CreateWindowsShortcut} ]] || source ./utils/fn__CreateWindowsShortcut.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 
 
 ## ##################################################################################
@@ -29,67 +25,58 @@ trap traperr ERR
 ## ##################################################################################
 ## ##################################################################################
 
-# confirm project directory
-# /mnt/x/dir1/dir2/..dirn/projectDir/_commonUtils/02_create_node13131_container
-#
+
 __DEBMIN_HOME=$(pwd)
 readonly __CWD_NAME=$(basename ${__DEBMIN_HOME})
 [[ "${__CWD_NAME}" == "${__SCRIPTS_DIRECTORY_NAME}" ]] || {
   echo "${0} must run from directory with name _commonUtils and will use the name of its parent directory as project directory"
-  exit
+  exit ${__FAILED}
 }
 
 cd ${__DEBMIN_HOME}
 
+
 __DEBMIN_HOME=${__DEBMIN_HOME%%/${__SCRIPTS_DIRECTORY_NAME}} # strip _commonUtils
 __DEBMIN_HOME_DOS=$(fn__WSLPathToRealDosPath ${__DEBMIN_HOME})
-__DEBMIN_HOME_WSD=$(fn__WSLPathToWSDPath ${__DEBMIN_HOME})
 
-__DEBMIN_PPROJECT_NAME=${__DEBMIN_HOME##*/} # strip directory hierarchy before parent of _commonUtils
-__DEBMIN_PPROJECT_NAME=${__DEBMIN_PPROJECT_NAME//[ _^%@-]/}  # remove special characters, if any, from project name
 
-if [ -f ${__DEBMIN_HOME}/dev/__h.containerUri ]; then 
-  mv ${__DEBMIN_HOME}/dev/__h.containerUri ${__DEBMIN_HOME}/dev/__h.containerUri_$(date +%Y%m%d_%H%M%S)
+folderLines=$(grep '"folder": "vscode-remote' /mnt/c/Users/${USER}/AppData/Roaming/Code/storage.json) && STS=$? || STS=$?
+if [[ ${STS} -ne ${__SUCCESS} ]]
+then
+  echo "____________Cannot determine internal container id for use with vscode-remote"
+  echo "____________Start the container, if not running, use vscode to attach to the remote container and let it install what it wants"
+  echo "____________Keep the container running and re-run the script"
+  exit ${__FAILED}
 fi
 
-folderLines=$(grep '"folder": "vscode-remote' /mnt/c/Users/${USER}/AppData/Roaming/Code/storage.json)
-lastSts=$?
 
-if [ ${lastSts} -ne ${__SUCCESS} ]; then
-  echo "____________No running running containers - cannot find container id for use with vscode-remote"
-  echo "____________Start the container, use vscode to connect to the container and let this install what it wants"
-  echo "____________Try getting Container Id again"
-  exit
-fi
-
-folderUri=$(echo ${folderLines} | sed 's|^.*\"folder\": ||;s|,$||;s|/home/node||')
-folderUri=$(echo ${folderUri} | sed 's|^.*\"folder\": ||;s|,$||;s|/dev||;')
-folderUri=$(echo ${folderUri} | sed 's|^.*\"folder\": ||;s|,$||;s|/root$||')
-folderUri=${folderUri%\"}
-folderUri="${folderUri}/home/node/dev\""
-lastSts=$?
-
-if [ ${lastSts} -ne ${__SUCCESS} ]; then
+folderUri=$(echo ${folderLines} | sed 's|^.*\"folder\": ||;s|,$||') && STS=$? || STS=$?
+if [[ ${STS} -ne ${__SUCCESS} ]]; then
   echo "____________Error getting folderUri"
   echo "____________Have:"
   echo ${folderUri}
   echo "____________Investigate the issue then try getting Container Id again"
-  exit
+  exit ${__FAILED}
 fi
 
-echo ${folderUri} > ${__DEBMIN_HOME}/dev/__h.containerUri
 
-echo "'/mnt/c/Program Files/Microsoft VS Code/Code.exe'" --folder-uri $(cat ${__DEBMIN_HOME}/dev/__h.containerUri) > ${__DEBMIN_HOME}/dev/10_code_in_remote_container.sh
-chmod u+x ${__DEBMIN_HOME}/dev/10_code_in_remote_container.sh
+declare -r lrShellScriptPath="${__DEBMIN_HOME}/${__SCRIPTS_DIRECTORY_NAME}/10_code_in_remote_container.sh"
+echo "'/mnt/c/Program Files/Microsoft VS Code/Code.exe'" --folder-uri ${folderUri} > ${lrShellScriptPath}
+chmod u+x ${lrShellScriptPath}
+
+
+declare -r lrLinkDOSPath="${__DEBMIN_HOME_DOS}\\${__SCRIPTS_DIRECTORY_NAME}\\10 code in remote container.lnk"
+
 
 powershell.exe "
-  \$s=(New-Object -COM WScript.Shell).CreateShortcut('${__DEBMIN_HOME_DOS}\dev\10 code in remote container.lnk');\
+  \$s=(New-Object -COM WScript.Shell).CreateShortcut('${lrLinkDOSPath}');\
   \$s.TargetPath='wsl.exe';\
   \$s.WorkingDirectory='%~dp0';\
-  \$s.Arguments=' ${__DEBMIN_HOME}/dev/10_code_in_remote_container.sh ';\
+  \$s.Arguments=' ${lrShellScriptPath} ';\
   \$s.WindowStyle=${fn__CreateWindowsShortcut__RUN_MINIMISED};\
   \$s.IconLocation='C:\Program Files\Microsoft VS Code\Code.exe';\
-
-  \$s.Save()\
+  \$s.Save()
 "
+
+
 echo "____________Created/Updated Container Id and Links to Remote Development"

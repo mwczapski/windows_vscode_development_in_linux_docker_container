@@ -90,6 +90,7 @@ fnCreateDotGitignore \
     exit ${__FAILED}
   }
 
+
 if fn_GitIntegrationIsEnabledInContainer 
 then
 
@@ -105,6 +106,7 @@ then
 else 
   echo "____ Git integration NOT enabled in the container"
 fi
+
 
 fn__CreateWindowsShortcutsForShellInContainer \
   "${__DEBMIN_PPROJECT_NAME}" \
