@@ -132,6 +132,9 @@ out
 .env.development.local
 .env.test.local
 .env.production.local
+
+# .gitconfig keeps changing in remote container so ignore it
+.gitconfig
  
 # Log files
 npm-debug.log*

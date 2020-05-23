@@ -473,8 +473,8 @@ function fn__SetEnvironmentVariables() {
   function _fnMissingOrEmpty() { [[ -z "${1}" ]] ; }
   function _fnPresentAndValued() { [[ -n "${1}" ]] ; }
 
-  _fnMissingOrEmpty  ${1} 2>/dev/null && return ${__EMPTY_ARGUMENT_NOT_ALLOWED}
-  _fnMissingOrEmpty  ${2} 2>/dev/null && return ${__EMPTY_ARGUMENT_NOT_ALLOWED}
+  _fnMissingOrEmpty ${1} 2>/dev/null && return ${__EMPTY_ARGUMENT_NOT_ALLOWED}
+  _fnMissingOrEmpty ${2} 2>/dev/null && return ${__EMPTY_ARGUMENT_NOT_ALLOWED}
 
   # name variables
   #
