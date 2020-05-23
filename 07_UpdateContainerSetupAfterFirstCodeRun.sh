@@ -15,6 +15,7 @@ trap traperr ERR
 [[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 [[ ${fn__WSLPathToDOSandWSDPaths} ]] || source ./utils/fn__WSLPathToDOSandWSDPaths.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 [[ ${fn__CreateWindowsShortcut} ]] || source ./utils/fn__CreateWindowsShortcut.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${_02_create_git_client_container_utils} ]] || source ./02_create_git_client_container_utils.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 
 
 ## ##################################################################################
@@ -25,7 +26,6 @@ trap traperr ERR
 ## ##################################################################################
 ## ##################################################################################
 
-
 __DEBMIN_HOME=$(pwd)
 readonly __CWD_NAME=$(basename ${__DEBMIN_HOME})
 [[ "${__CWD_NAME}" == "${__SCRIPTS_DIRECTORY_NAME}" ]] || {
@@ -33,7 +33,15 @@ readonly __CWD_NAME=$(basename ${__DEBMIN_HOME})
   exit ${__FAILED}
 }
 
+
 cd ${__DEBMIN_HOME}
+
+
+declare lDerivedContainerName=$(fn__DeriveContainerName ${__DEBMIN_HOME}) && STS=$? || STS=$?
+if [[ ${STS} -eq ${__FAILED} ]]
+then
+  return ${__FAILED}
+fi
 
 
 __DEBMIN_HOME=${__DEBMIN_HOME%%/${__SCRIPTS_DIRECTORY_NAME}} # strip _commonUtils
@@ -60,23 +68,19 @@ if [[ ${STS} -ne ${__SUCCESS} ]]; then
 fi
 
 
-declare -r lrShellScriptPath="${__DEBMIN_HOME}/${__SCRIPTS_DIRECTORY_NAME}/10_code_in_remote_container.sh"
+declare -r lrShellScriptPath="${__DEBMIN_HOME}/10_code_in_remote_container.sh"
 echo "'/mnt/c/Program Files/Microsoft VS Code/Code.exe'" --folder-uri ${folderUri} > ${lrShellScriptPath}
 chmod u+x ${lrShellScriptPath}
 
 
-declare -r lrLinkDOSPath="${__DEBMIN_HOME_DOS}\\${__SCRIPTS_DIRECTORY_NAME}\\10 code in remote container.lnk"
+declare -r lrLinkDOSPath="${__DEBMIN_HOME_DOS}\\10 code in remote container.lnk"
+fn__CreateWindowsShortcut \
+  "${lrLinkDOSPath}" \
+  "C:\Windows\System32\wsl.exe" \
+  "%~dp0" \
+  "${fn__CreateWindowsShortcut__RUN_MINIMISED}" \
+  "C:\Program Files\Microsoft VS Code\Code.exe" \
+  "${lrShellScriptPath}"
 
 
-powershell.exe "
-  \$s=(New-Object -COM WScript.Shell).CreateShortcut('${lrLinkDOSPath}');\
-  \$s.TargetPath='wsl.exe';\
-  \$s.WorkingDirectory='%~dp0';\
-  \$s.Arguments=' ${lrShellScriptPath} ';\
-  \$s.WindowStyle=${fn__CreateWindowsShortcut__RUN_MINIMISED};\
-  \$s.IconLocation='C:\Program Files\Microsoft VS Code\Code.exe';\
-  \$s.Save()
-"
-
-
-echo "____________Created/Updated Container Id and Links to Remote Development"
+echo "____________Created/Updated script and windows shortcut to run VSCode with resources in the '${lDerivedContainerName}' container"
