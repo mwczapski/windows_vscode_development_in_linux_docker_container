@@ -16,6 +16,7 @@ traperr() {
 set -o errtrace
 trap traperr ERR
 
+declare -r _03_create_named_repo_in_private_gitserver="1.0.1"
 
 # common environment variable values and utility functions
 #
@@ -23,9 +24,6 @@ trap traperr ERR
 
 [[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 
-[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
-[[ ${fn__DockerGeneric} ]] || source ./utils/fn__DockerGeneric.sh "1.0.0" || exit ${__EXECUTION_ERROR}
-[[ ${__env_devcicd_net} ]] || source ./utils/__env_devcicd_net.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 [[ ${__env_gitserverConstants} ]] || source ./utils/__env_gitserverConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 [[ ${fn__GitserverGeneric} ]] || source ./utils/fn__GitserverGeneric.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 [[ ${fn__UtilityGeneric} ]] || source ./utils/fn__UtilityGeneric.sh "1.0.0" || exit ${__EXECUTION_ERROR}
@@ -93,7 +91,7 @@ declare pClientIdRSAPubFilePath=${2:-~/.ssh/id_rsa.pub}
 
 # validate input, if provided
 #
-lCanonicalClientGitRemoteRepoName=$( fn__SanitizeInputAlphaNum ${pClientGitRemoteRepoName} )
+lCanonicalClientGitRemoteRepoName=$( fn__SanitizeInputIdentifier ${pClientGitRemoteRepoName} )
 
 fn__InputIsValid \
   "${pClientGitRemoteRepoName}" \

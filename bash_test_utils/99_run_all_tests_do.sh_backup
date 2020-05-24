@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Generated on: 2020-05-24 11:31:43
-# find . -name \*_tests.sh -exec echo "_FORCE_RUNNING_ALL_TESTS_='YES' {}  | tee -a " \; | grep -v ${0} | grep -v '/_' >> $(dirname ${0})/99_run_all_tests_do.sh
+# Generated on: 2020-05-24 10:43:04
+# find . -name \*_tests.sh -exec echo "_FORCE_RUNNING_ALL_TESTS_='YES' {}" \; | grep -v ${0} | grep -v '/_' >> $(dirname ${0})/99_run_all_tests_do.sh
 
 declare -r logFile="$(dirname ${0})/99_run_all_tests.log"
 
@@ -46,4 +46,3 @@ printf "____ %4d tests failed\n" ${sum}
 
 sum=$(grep 'Not running test for' ${logFile} | wc -l )
 printf "____ %4d tests skipped\n" ${sum}
-
