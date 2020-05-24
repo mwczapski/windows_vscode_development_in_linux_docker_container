@@ -39,6 +39,85 @@
 
 <!-- /TOC -->
 
+<!--
+
+mcz@mcz10:/mnt/d/github_materials/programming_in_bash/_commonUtils$ ./04_DeleteRemoteRepoIfEmpty.sh -f yes
+_??_ Use default name 'programming_in_bash' as Remote Git Repository name?  (y/N) y
+____ Will use 'programming_in_bash' as the name of the remote git repository which to delete
+____ Input accepted as 'programming_in_bash'
+____ Client authorised to interact with the server
+programming_in_bash
+____ Repository 'programming_in_bash' exists
+____ Non-empty repository 'programming_in_bash' will be deleted
+____ Repository 'programming_in_bash' deleted
+
+ -->
+
+<!--
+
+mcz@mcz10:/mnt/d/github_materials/programming_in_bash/_commonUtils$ ./02_create_git_client_container.sh -g yes
+____ Set environment variables
+____ Will include support for private git server integration
+_??_ Create remote git repository if it does not exist?  (y/N) y
+_??_ Use default name 'programming_in_bash' as Remote Git Repository name?  (y/N) y
+____ Will use 'programming_in_bash' as the name of the remote git repository which to create
+_??_ Project Directory is /mnt/d/github_materials/programming_in_bash, Project Name is 'programming_in_bash' - Is this correct? (y/N) y
+_??_ Use default name 'programming_in_bash' as container name?  (y/N) y
+____ Using 'programming_in_bash' as Container Name and Host Name
+_??_ Create Windows Shortcuts? (y/N) y
+____ Will create windows shortcuts
+____ Created '/mnt/d/github_materials/programming_in_bash/docker-compose.yml_programming_in_bash'
+____ Image 'gitclient:1.0.0' exist
+Creating programming_in_bash ... done
+____ Container' programming_in_bash' started
+____ Generated '/home/gitclient' ssh keypair
+____ Added '/home/gitclient' public key to 'gitserver' ~/.ssh/authorised_keys
+____ Added 'gitserver' to '/home/gitclient' ${HOME}/.ssh/known_hosts
+____ Added 'programming_in_bash' to '/home/gitclient' ${HOME}/.ssh/known_hosts
+Initialized empty Git repository in /opt/gitrepos/programming_in_bash.git/
+programming_in_bash
+____ Created remote repository 'programming_in_bash'
+____ Created Windows Shortcuts
+____ ./02_create_git_client_container.sh Done
+
+-->
+
+<!--
+
+mcz@mcz10:/mnt/d/github_materials/programming_in_bash/_commonUtils$ ./06_set_up_container_for_remote_dev.sh
+_??_ Artefact location will be '/mnt/d/github_materials/programming_in_bash' - Is this correct? (y/N) y
+____ Container 'programming_in_bash' exists and is running
+____ Set up startup project directory in remote environment
+____ Created .gitignore in remote environment
+[master (root-commit) d8a17bd] initial commit
+ 5 files changed, 184 insertions(+)
+ create mode 100644 .bash_logout
+ create mode 100644 .bashrc
+ create mode 100644 .gitignore
+ create mode 100644 .profile
+ create mode 100644 backups/programming_in_bash.txt
+____ Initialised git repository in remote environment
+____ Container set up
+
+-->
+
+<!--
+
+Start remote vscode from local vscode
+Let remote vscode perform support software installation
+Leave remote container running  and run ./07_UpdateContainerSetupAfterFirstCodeRun.sh
+
+./VSCode-Remote-Containers-Attach-to-Running-Container.png'
+
+ -->
+
+<!--
+
+mcz@mcz10:/mnt/d/github_materials/programming_in_bash/_commonUtils$ ./07_UpdateContainerSetupAfterFirstCodeRun.sh
+____________Created/Updated script and windows shortcut to run VSCode with resources in the 'programming_in_bash' container
+
+ -->
+
 ## Introduction
 
 Scripts in this package facilitate creation of a Docker Image and a Docker Container with a Git Client that can be used with, or to test, the [private GIT Server](https://github.com/mwczapski/private_gitserver_docker_container). The image uses the git distribution from the Debian Jesse repository. The container can be used as the basis for a development environment, upon which to build a development environment with the appropriate tools like NodeJS, Java, etc..

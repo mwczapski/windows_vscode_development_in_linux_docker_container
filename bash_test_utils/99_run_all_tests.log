@@ -1,0 +1,158 @@
+INFO 02_create_git_client_container_tests
+PASS 125: assessReturnStatusAndStdOut function will return __FAILURE, insufficient number of arguments and Usage message
+PASS 139: fn__SetEnvironmentVariables will return __INSUFFICIENT_ARGS_STS status
+PASS 183: fn__SetEnvironmentVariables function will return __NO_SUCH_DIRECTORY
+PASS 229: fn__SetEnvironmentVariables function will return __SUCCESS
+PASS 261: fn__SetEnvironmentVariables will return __SUCCESS and match expected values of all reference variables
+PASS 308: fn__SetEnvironmentVariables function will return __SUCCESS
+PASS 340: fn__SetEnvironmentVariables will return __FAILED, some variable values will not match expected values of reference variables
+PASS 385: fn__SetEnvironmentVariables function will return __INSUFFICIENT_ARGS_STS - one of the expected output variables is missing
+PASS 431: fn__SetEnvironmentVariables function will return __INVALID_VALUE - one of the expected output variables is empty
+PASS 492: fn__CreateDockerComposeFile function will return __FAILURE status, insufficient number of arguments and Usage message
+PASS 527: fn__CreateDockerComposeFile will return __SUCCESS status and confirm that the file was created
+PASS 582: fn__CreateDockerComposeFile function will return __SUCCESS status and will write docker-compose.yml file in the designated directory whose content is identical to the expected content
+PASS 667: fn__DeriveContainerName function will return __FAILURE status, insufficient number of arguments and Usage message
+PASS 689: fn__DeriveContainerName function will return __SUCCESS status and expected container name
+PASS 711: fn__DeriveContainerName function will return __SUCCESS status and incorrect container name
+PASS 733: fn__DeriveContainerName function will return __SUCCESS status and correct container name
+PASS 781: fn__GetProjectName function will return __FAILURE status, insufficient number of arguments and Usage message
+PASS 803: fn__GetProjectName function will return __SUCCESS status
+PASS 825: fn__GetProjectName function will return __FAILED status if project structure is as expected but project directory hierarchy does not exists
+PASS 847: fn__GetProjectName function will return __SUCCESS status if project structure is as expected and directory hierarchy exists
+PASS 869: fn__GetProjectName function will return __SUCCESS status if project structure is as expected and directory hierarchy exists
+PASS 913: fn__GetProjectDirectory function will return __FAILURE status, insufficient number of arguments and Usage message
+PASS 936: fn__GetProjectDirectory function will return __FAILURE status and error message if the project directory structure is not as expected
+PASS 959: fn__GetProjectDirectory function will return __FAILED status if project structure is as expected but project directory hierarchy does not exists
+PASS 982: fn__GetProjectDirectory function will return __SUCCESS status if project structure is as expected and directory hierarchy exists
+PASS 1043: fn__GetClientContainerName function will return __FAILURE status, insufficient number of arguments and Usage message
+PASS 1066: fn__GetClientContainerName function will return __FAILURE status, 2nd argument value is invalid
+PASS 1091: fn__GetClientContainerName function will return __SUCCESS status and accept pre-defined container name
+PASS 1115: fn__GetClientContainerName function will return __SUCCESS status and accept derived container name
+PASS 1140: fn__GetClientContainerName function will return __SUCCESS status and accepts derived container name
+PASS 1165: fn__GetClientContainerName function will return __FAILED status and rejects empty entered container name
+PASS 1210: fn__GetRemoteGitRepoName function will return __FAILURE status, insufficient number of arguments and Usage message
+PASS 1232: fn__GetRemoteGitRepoName function will return __FAILURE status, 2nd argument value is invalid
+PASS 1256: fn__GetRemoteGitRepoName function will return __YES status and accept default repository name
+PASS 1281: fn__GetRemoteGitRepoName function will return __SUCCESS status and will not accept default repository name
+____ Executed 34 tests
+____ 34 tests were successful
+____ 0 tests failed
+INFO fn__GitserverGeneric_tests
+SUCCESS  41: fn__DoesRepoAlreadyExist: gitserver gitserver git /bin/bash => gitserver == gitserver (0 -eq 0)
+SUCCESS  53: fn__DoesRepoAlreadyExist: gitserverXX gitserver git /bin/bash =>  ==  (1 -eq 1)
+SUCCESS  66: fn__DoesRepoAlreadyExist: 'gitserver' 'gitserverXX' 'git' '/bin/bash' =>  ==  (1 -eq 1)
+SUCCESS  78: fn__DoesRepoAlreadyExist: 'gitserver' 'XXgitserverXX' 'git' '/bin/bash' =>  ==  (1 -eq 1)
+SUCCESS  90: fn__DoesRepoAlreadyExist: 'gitserver' 'gitserver' 'XXgit' '/bin/bashXX' =>  ==  (1 -eq 1)
+SUCCESS  103: fn__DoesRepoAlreadyExist: 'gitserverXX' 'gitserver' 'git' => ____ Insufficient number of arguments == ____ Insufficient number of arguments (11 -eq 11)
+SUCCESS  116: fn__DoesRepoAlreadyExist: 'gitserver' 'gitserver' => ____ Insufficient number of arguments == ____ Insufficient number of arguments (11 -eq 11)
+Not running test for fn__IsRepositoryEmpty
+Not running test for fn__IsSSHToRemoteServerAuthorised
+____ Executed 7 tests
+____ 7 tests were successful
+____ 0 tests failed
+INFO fn__SSHInContainerUtils_tests
+PASS 125: assessReturnStatusAndStdOut function will return __FAILURE, insufficient number of arguments and Usage message
+PASS 93: fn__GenerateSSHKeyPairInClientContainer function will return __FAILURE, insufficient number of arguments and Usage message
+PASS 120: fn__GenerateSSHKeyPairInClientContainer function will return __SUCCESS and the content of the generated ~/.ssh/id_rsa.pub
+PASS 145: fn__GenerateSSHKeyPairInClientContainer function will return __FAILED - unable to find user xxxxx: no matching entries in passwd file
+PASS 193: fn__GetSSHIdRsaPubKeyFromClientContainer function will return __FAILURE, insufficient number of arguments and Usage message
+PASS 220: fn__GetSSHIdRsaPubKeyFromClientContainer function will return __SUCCESS and the content of the ~/.ssh/id_rsa.pub
+PASS 245: fn__GetSSHIdRsaPubKeyFromClientContainer function will return __FAILED - unable to find user xxxxx: no matching entries in passwd file
+PASS 315: fn__IntroduceRemoteClientToServerWithPublicKey function will return __FAILURE, insufficient number of arguments and Usage message
+PASS 350: fn__IntroduceRemoteClientToServerWithPublicKey function will return __FAILED trying to add empty public key to git server's ~/.ssh/authorized_keys
+PASS 413: fn__IntroduceRemoteClientToServerWithPublicKey function will return __FAILURE - invalid rsa public key or username mismatch
+PASS 447: fn__IntroduceRemoteClientToServerWithPublicKey function will return __FAILURE - trying inappropriate container name
+PASS 481: fn__IntroduceRemoteClientToServerWithPublicKey function will return __FAILURE - client username does not match username in id_rsa.pub
+Error: No such container: gitserverXXX
+PASS 517: fn__IntroduceRemoteClientToServerWithPublicKey function will return __FAILURE - unknown server container name
+unable to find user gitXXX: no matching entries in passwd file
+PASS 553: fn__IntroduceRemoteClientToServerWithPublicKey function will return __FAILURE - unknown server username
+OCI runtime exec failed: exec failed: container_linux.go:349: starting container process caused "exec: \"/bin/bashcowski\": stat /bin/bashcowski: no such file or directory": unknown
+PASS 589: fn__IntroduceRemoteClientToServerWithPublicKey function will return __FAILURE - unknown server shell binary
+PASS 640: fn__GetWSLClientsPublicKeyFromServer function will return __FAILURE, insufficient number of arguments and Usage message
+PASS 667: fn__GetWSLClientsPublicKeyFromServer function will return __SUCCESS and the content of the server's ~/.ssh/authorized_key for local user
+PASS 692: fn__GetWSLClientsPublicKeyFromServer function will return __FAILED - unable to find user xxxxx: no matching entries in passwd file
+PASS 736: fn__GenerateSSHKeyPairInWSLHost function will return __FAILURE, insufficient number of arguments and Usage message
+PASS 760: fn__GenerateSSHKeyPairInWSLHost function will return __SUCCESS and the content of the generated ~/.ssh/id_rsa.pub
+PASS 832: fn__GetSSHIdRsaPubKeyFromLocalWSLHost function will return __FAILURE, insufficient number of arguments and Usage message
+PASS 856: fn__GetSSHIdRsaPubKeyFromLocalWSLHost function will return __SUCCESS and the content of the ~/.ssh/id_rsa.pub
+PASS 943: fn__IntroduceLocalWSLClientToServerWithPublicKey function will return __FAILURE, insufficient number of arguments and Usage message
+PASS 976: fn__IntroduceLocalWSLClientToServerWithPublicKey function will return __FAILED trying to add empty public key to git server's ~/.ssh/authorized_keys
+PASS 1021: fn__IntroduceLocalWSLClientToServerWithPublicKey function will return __SUCCESS after adding client's id_rsa.pub public key to git server's ~/.ssh/authorized_keys
+PASS 1057: fn__IntroduceLocalWSLClientToServerWithPublicKey function will return __FAILURE - invalid rsa public key or username mismatch
+PASS 1087: fn__IntroduceLocalWSLClientToServerWithPublicKey function will return __FAILURE - unknown server container name
+PASS 1117: fn__IntroduceLocalWSLClientToServerWithPublicKey function will return __FAILURE - unknown server username
+PASS 1147: fn__IntroduceLocalWSLClientToServerWithPublicKey function will return __FAILURE - unknown server shell binary
+____ Executed 28 tests
+____ 28 tests were successful
+____ 0 tests failed
+INFO fn__UtilityGeneric_tests
+PASS 125: assessReturnStatusAndStdOut function will return __FAILURE, insufficient number of arguments and Usage message
+PASS 70: fn__IsValidRegEx function will return __FAILED and 'Requires a shell regex to validate'
+PASS 92: fn__IsValidRegEx will return __SUCCESS and string literal 'VALID'
+PASS 115: fn__IsValidRegEx will return __SUCCESS and string literal 'VALID'
+PASS 138: fn__IsValidRegEx will return __SUCCESS and string literal 'VALID'
+PASS 161: fn__IsValidRegEx will return __FAILED and '_____ Alleged regular expression '[a-z' must start with [ and end with ]'
+PASS 184: fn__IsValidRegEx will return __FAILED and '_____ Alleged regular expression 'a-z]' must start with [ and end with ]'
+PASS 207: fn__IsValidRegEx will return __FAILED and '_____ Alleged regular expression 'a-z' must start with [ and end with ]'
+PASS 230: fn__IsValidRegEx will return __FAILED and '_____ Alleged regular expression 'a-' must be at least 3 characters long'
+PASS 253: fn__IsValidRegEx will return __SUCCESS and a string literal 'VALID'
+PASS 276: fn__IsValidRegEx will return __SUCCESS and a string literal 'VALID'
+PASS 299: fn__IsValidRegEx will return __SUCCESS and a string literal 'VALID'
+PASS 343: fn__SanitizeInput function will return __FAILED and '_____ Requires shell regex to use to determine valid characters and eliminate all that do not match'
+PASS 365: fn__SanitizeInput function will return __FAILED and '_____ Require string to sanitize'
+PASS 388: fn__SanitizeInput function will return __SUCCESS and sanitized string
+PASS 411: fn__SanitizeInput function will return __SUCCESS and sanitized string
+PASS 434: fn__SanitizeInput function will return __SUCCESS and sanitized string
+PASS 457: fn__SanitizeInput function will return __SUCCESS and sanitized string
+PASS 480: fn__SanitizeInput function will return __SUCCESS and sanitized string
+PASS 503: fn__SanitizeInput function will return __SUCCESS and sanitized string
+PASS 545: fn__SanitizeInputAlphaNum function will return __FAILED and '_____ Require string which to sanitize'
+PASS 567: fn__SanitizeInputAlphaNum function will return __SUCCESS and sanitized string
+PASS 589: fn__SanitizeInputAlphaNum function will return __SUCCESS and sanitized string
+PASS 611: fn__SanitizeInputAlphaNum function will return __SUCCESS and sanitized string
+PASS 653: fn__SanitizeInputAlpha function will return __FAILED and '_____ Require string which to sanitize'
+PASS 675: fn__SanitizeInputAlpha function will return __SUCCESS and sanitized string
+PASS 697: fn__SanitizeInputAlpha function will return __SUCCESS and sanitized string
+PASS 719: fn__SanitizeInputAlpha function will return __SUCCESS and sanitized string
+PASS 761: fn__SanitizeInputNumeric function will return __FAILED and '_____ Require string which to sanitize'
+PASS 783: fn__SanitizeInputNumeric function will return __SUCCESS and sanitized string
+PASS 805: fn__SanitizeInputNumeric function will return __SUCCESS and sanitized string
+PASS 827: fn__SanitizeInputNumeric function will return __SUCCESS and sanitized string
+PASS 873: fn__FileSameButForDate function will return __FAILED and '_____ Insufficient number of arguments'
+PASS 895: fn__FileSameButForDate function will return __FAILED and '_____ Insufficient number of arguments'
+PASS 921: fn__FileSameButForDate function will return __SUCCESS - files have the same content
+PASS 947: fn__FileSameButForDate function will return __FAILED - files have different content
+PASS 1002: fn__GetValidIdentifierInput function will return __FAILURE status, insufficient number of arguments and Usage message
+PASS 1026: fn__GetValidIdentifierInput function will return __FAILURE status when 3rd argument is an empty strings
+PASS 1050: fn__GetValidIdentifierInput function will return __FAILURE status when 4th argument is an empty strings
+PASS 1075: fn__GetValidIdentifierInput function will return __SUCCESS and the sanitised version of the input, not excceeding given length
+PASS 1102: fn__GetValidIdentifierInput function will return __FAILURE because test string contains only characters which are not valid in an identifier
+PASS 1128: fn__GetValidIdentifierInput function will return __SUCCESS and the value provided to it in the outValidValue argument
+PASS 1168: fn__ConfirmYN function will return __FAILURE status when prompt argument is not provided
+PASS 1189: fn__ConfirmYN function will return default ${__NO} if no input is provided
+PASS 1210: fn__ConfirmYN function will return ${__NO} if input is a string starting with anything other than Y or y
+PASS 1231: fn__ConfirmYN function will return ${__NO} if input is a string starting with anything other than Y or y
+PASS 1252: fn__ConfirmYN function will return ${__YES} if input is a string starting with Y or y
+PASS 1273: fn__ConfirmYN function will return ${__YES} if input is a string starting with Y or y
+PASS 1313: fn__RefVariableExists function will return __NO status when argument is not provided
+PASS 1335: fn__RefVariableExists function will return __NO status when empty argument is provided
+PASS 1357: fn__RefVariableExists function will return __YES status when variable name is provided, whether this variable exists in the outer scope or not
+PASS 1379: fn__RefVariableExists function will return __YES status when variable name is provided, whether this variable exists in the outer scope or not
+PASS 1401: fn__RefVariableExists function will return __YES status when variable name is provided, whether this variable exists in the outer scope or not
+____ Executed 52 tests
+____ 52 tests were successful
+____ 0 tests failed
+INFO fn__WSLPathToDOSandWSDPaths_tests
+PASS 125: assessReturnStatusAndStdOut function will return __FAILURE, insufficient number of arguments and Usage message
+PASS 73: fn__WSLPathToWSDPath will return __FAILURE, insufficient number of arguments and Usage message
+PASS 94: fn__WSLPathToWSDPath will return __SUCCESS and the the pseudo-DOS path
+PASS 116: fn__WSLPathToWSDPath will return __FAILED and X is not a valid WSL path
+PASS 139: fn__WSLPathToWSDPath will return __FAILED and X is not a valid WSL path
+PASS 180: fn__WSLPathToRealDosPath will return __FAILURE, insufficient number of arguments and Usage message
+PASS 201: fn__WSLPathToRealDosPath will return __SUCCESS and the the DOS path
+PASS 223: fn__WSLPathToRealDosPath will return __FAILED and X is not a valid WSL path
+PASS 245: fn__WSLPathToRealDosPath will return __FAILED and X is not a valid WSL path
+____ Executed 8 tests
+____ 8 tests were successful
+____ 0 tests failed

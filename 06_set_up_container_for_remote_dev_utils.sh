@@ -110,6 +110,7 @@ function fnCreateDotGitignore() {
 # disallow what's below
 _*
 Downloads
+backups
 *.tar.gz
 *.7z
 ~*
@@ -135,7 +136,11 @@ out
 
 # .gitconfig keeps changing in remote container so ignore it
 .gitconfig
- 
+
+# don't allow ssh arifacts and volatile stuff
+.ssh
+.bash_history
+
 # Log files
 npm-debug.log*
 yarn-debug.log*
@@ -183,6 +188,7 @@ function fnInitClientContainerGitEnvironment() {
     git config --global user.name '${__DEBMIN_USERNAME}'
     git config --global user.email '${__DEBMIN_USERNAME}@${__HOST_NAME}'
     git remote add origin ssh://git@gitserver${__GITSERVER_REPOS_ROOT}/${__GIT_REMOTE_REPO_NAME}.git
+    git config push.default current
     git add .
     git commit -m 'initial commit'
     # git config --list

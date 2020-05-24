@@ -9,8 +9,8 @@
 
 [[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 
-declare -ur _02_create_git_client_container_utils="1.0.0"
-fn__SourcedVersionOK "${0}" "${LINENO}" "${1:-0.0.0}" "${_02_create_git_client_container_utils}" "1.0.0" || exit ${__EXECUTION_ERROR}
+declare -ur _02_create_git_client_container_utils="1.0.1"
+fn__SourcedVersionOK "${0}" "${LINENO}" "1.0.1" "${_02_create_git_client_container_utils}" || exit ${__EXECUTION_ERROR}
 
 # common environment variable values and utility functions
 #

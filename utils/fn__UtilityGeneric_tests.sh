@@ -1285,7 +1285,6 @@ else
 fi
 
 
-echo "----------------------------------------------"
 functionName="fn__RefVariableExists"
 :<<-'------------Function_Usage_Note-------------------------------'
   Usage: 

@@ -96,7 +96,7 @@ fn__DoesRepoAlreadyExist \
   ${lCanonicalClientGitRemoteRepoName}  \
   ${__GITSERVER_CONTAINER_NAME} \
   ${__GIT_USERNAME} \
-  ${__GITSERVER_SHELL} && STS=$? || STS=$? # can be __NO or __EXECUTION_ERROR
+  ${__GITSERVER_SHELL} && STS=$? || STS=$? # non-__YES alternative can be __NO or __EXECUTION_ERROR
 
   [[ ${STS} -eq ${__EXECUTION_ERROR} ]] && {
       echo "____ Failed to determine whether Git Repository '${lCanonicalClientGitRemoteRepoName}' already exists"
@@ -106,7 +106,7 @@ fn__DoesRepoAlreadyExist \
       echo "____ Git Repository '${lCanonicalClientGitRemoteRepoName}' does not exists"
       exit ${__FAILED}
   }
-echo "____ Repository '${lCanonicaClientGitRemoteRepoName}' exists"
+echo "____ Repository '${lCanonicalClientGitRemoteRepoName}' exists"
  
 
 fn__IsRepositoryEmpty \
@@ -116,17 +116,17 @@ fn__IsRepositoryEmpty \
   ${__GIT_USERNAME} \
   ${__GITSERVER_SHELL} && STS=${__YES} || STS=${__NO}
 
-if [[ $STS -eq ${__NO} ]]
-then
-  if fn__ForceRemoveRemoteRepo "${*}" 
+  if [[ $STS -eq ${__NO} ]]
   then
-    echo "____ Non-empty repository '${lCanonicalClientGitRemoteRepoName}' will be deleted"
-  else
-    echo "____ Repository '${lCanonicalClientGitRemoteRepoName}' is not empty - can't delete it using this method - please see server administrator"
-    echo "____ (${LINENO}) Aborting ..."
-    exit ${__FAILED}
+    if fn__ForceRemoveRemoteRepo "${*}" 
+    then
+      echo "____ Non-empty repository '${lCanonicalClientGitRemoteRepoName}' will be deleted"
+    else
+      echo "____ Repository '${lCanonicalClientGitRemoteRepoName}' is not empty - can't delete it using this method - please see server administrator"
+      echo "____ (${LINENO}) Aborting ..."
+      exit ${__FAILED}
+    fi
   fi
-fi
 
 fn__DeleteRemoteRepository \
   ${lCanonicalClientGitRemoteRepoName}  \
@@ -137,12 +137,13 @@ fn__DeleteRemoteRepository \
     && STS=${__DONE} \
     || STS=${__FAILED}
 
-if [[ $STS -eq ${__FAILED} ]]
-then
-  echo "____ Failed to delete repository '${lCanonicalClientGitRemoteRepoName}' - please see server administrator"
-  echo "____ (${LINENO}) Aborting ..."
-  exit ${__FAILED}
-fi
+  if [[ $STS -eq ${__FAILED} ]]
+  then
+    echo "____ Failed to delete repository '${lCanonicalClientGitRemoteRepoName}' - please see server administrator"
+    echo "____ (${LINENO}) Aborting ..."
+    exit ${__FAILED}
+  fi
+
 
 fn__DoesRepoAlreadyExist \
   ${lCanonicalClientGitRemoteRepoName}  \

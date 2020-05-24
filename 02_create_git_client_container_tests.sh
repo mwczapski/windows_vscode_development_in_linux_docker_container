@@ -5,16 +5,32 @@
 # Copyright © 2020 Michael Czapski
 # #############################################
 
-declare -u _02_create_git_client_container_tests="1.0.0"
 echo "INFO 02_create_git_client_container_tests"
 
-[[ ${bash_test_utils} ]] || source ./bash_test_utils/bash_test_utils.sh
+[[ ${libSourceMgmt} ]] || source ./libs/libSourceMgmt.sh "1.0.0"
+[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
 
-[[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0"
-[[ ${__env_gitClientConstants} ]] || source ./utils/__env_gitClientConstants.sh
-[[ ${fn__UtilityGeneric} ]] || source ./utils/fn__UtilityGeneric.sh
+declare -u _02_create_git_client_container_tests="1.0.0"
+fn__SourcedVersionOK "${0}" "${LINENO}" "${1:-0.0.0}" "${_02_create_git_client_container_tests}" "1.0.0" || exit ${__EXECUTION_ERROR}
 
-[[ ${_02_create_git_client_container_utils} ]] || source ./02_create_git_client_container_utils.sh
+# common environment variable values and utility functions
+#
+[[ ${bash_test_utils} ]] || source ./bash_test_utils/bash_test_utils.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+
+[[ ${fn__UtilityGeneric} ]] || source ./utils/fn__UtilityGeneric.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${__env_gitserverConstants} ]] || source ./utils/__env_gitserverConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${__env_gitClientConstants} ]] || source ./utils/__env_gitClientConstants.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+[[ ${_02_create_git_client_container_utils} ]] || source ./02_create_git_client_container_utils.sh "1.0.0" || exit ${__EXECUTION_ERROR}
+
+
+
+# [[ ${bash_test_utils} ]] || source ./bash_test_utils/bash_test_utils.sh "1.0.0"
+
+# [[ ${__env_GlobalConstants} ]] || source ./utils/__env_GlobalConstants.sh "1.0.0"
+# [[ ${__env_gitClientConstants} ]] || source ./utils/__env_gitClientConstants.sh "1.0.0"
+# [[ ${fn__UtilityGeneric} ]] || source ./utils/fn__UtilityGeneric.sh "1.0.0"
+
+# [[ ${_02_create_git_client_container_utils} ]] || source ./02_create_git_client_container_utils.sh "1.0.0"
 
 
 declare -i iSuccessResults=0
@@ -41,9 +57,6 @@ declare -i _RUN_TEST_SET_=${__NO}
 #
 #_FORCE_RUNNING_ALL_TESTS_=""
 
-# echo "------------------------------------ F ---------------"
-# declare -F 
-# echo "------------------------------------ F ---------------"
 
 ## ################################################################
 ## create expected files 
@@ -65,6 +78,7 @@ services:
         tty: true         # these two keep the container running even if there is no listener in the foreground
         stdin_open: true
 
+        user: testapp
         hostname: testapp
         volumes:
             - "/var/run/docker.sock:/var/run/docker.sock"
@@ -490,6 +504,7 @@ then
 
     local -r lGitClientContainerName="testapp"
     local -r lGitClientHostName="${lGitClientContainerName}"
+    local -r lGitClientUsername="${lGitClientContainerName}"
     local -r lDevCiCdNetDCInternal="devcicd_net"
     local -r lDebminSourceImageName="gitclient:1.0.0"
     local -r lDockerBoundVolumeSpec="d:/tmp/${lGitClientContainerName}/backups:/home/gitclient/backups"
@@ -498,7 +513,15 @@ then
     testIntent="${functionName} will return __SUCCESS status and confirm that the file was created"
     expectedStringResult=""
     expectedStatusResult=${__SUCCESS}
-    ${functionName} ${lGitClientContainerName} ${lGitClientHostName} ${lDevCiCdNetDCInternal} ${lDebminSourceImageName} ${lDockerBoundVolumeSpec} ${lDockerComposeFileWSL} && actualStatusResult=$? || actualStatusResult=$? 
+    ${functionName} \
+        ${lGitClientContainerName} \
+        ${lGitClientHostName} \
+        ${lGitClientUsername} \
+        ${lDevCiCdNetDCInternal} \
+        ${lDebminSourceImageName} \
+        ${lDockerBoundVolumeSpec} \
+        ${lDockerComposeFileWSL} \
+            && actualStatusResult=$? || actualStatusResult=$? 
   
     assessReturnStatusAndStdOut \
       "${functionName}" \
@@ -517,6 +540,7 @@ then
 
     local -r lGitClientContainerName="testapp"
     local -r lGitClientHostName="${lGitClientContainerName}"
+    local -r lGitClientUsername="${lGitClientContainerName}"
     local -r lDevCiCdNetDCInternal="devcicd_net"
     local -r lDebminSourceImageName="gitclient:1.0.0"
     local -r lDockerBoundVolumeSpec="d:/tmp/${lGitClientContainerName}/backups:/home/gitclient/backups"
@@ -527,9 +551,19 @@ then
     expectedStatusResult=${__SUCCESS}
     expectedContentSameResult=${__YES}
 
-    actualStringResult=$( ${functionName} ${lGitClientContainerName} ${lGitClientHostName} ${lDevCiCdNetDCInternal} ${lDebminSourceImageName} ${lDockerBoundVolumeSpec} ${lDockerComposeFileWSL} ) && actualStatusResult=$? || actualStatusResult=$? 
+    actualStringResult=$( ${functionName} \
+        ${lGitClientContainerName} \
+        ${lGitClientHostName} \
+        ${lGitClientUsername} \
+        ${lDevCiCdNetDCInternal} \
+        ${lDebminSourceImageName} \
+        ${lDockerBoundVolumeSpec} \
+        ${lDockerComposeFileWSL} ) \
+            && actualStatusResult=$? || actualStatusResult=$? 
+
     [[ ${actualStringResult} ]] && echo "____ ${LINENO}: ${functionName}: ${actualStringResult}" 
     actualStringResult=${actualStringResult:0:${#expectedStringResult}}
+
     [[ "${actualStringResult}" == "${expectedStringResult}" && ${actualStatusResult} -eq ${expectedStatusResult} ]] && {
         diff -swq ${_DOCKER_COMPOSE_EXPECTED_} ${lDockerComposeFileWSL} >/dev/null && STS=$? || STS=$?
         if [[ $STS -ne ${__THE_SAME} ]]
@@ -600,7 +634,7 @@ then
         ((iFailureResults++)); true
       }
     }
-  fn__CreateDockerComposeFile_test_004
+  # fn__CreateDockerComposeFile_test_004
 
 
 else 
@@ -1158,7 +1192,7 @@ functionName="fn__GetRemoteGitRepoName"
     __FAILED if there were insufficient arguments, all opportunities to choose a name were exhausted or other unrecoverable errors occured
 ------------Function_Usage_Note-------------------------------
 
-_RUN_TEST_SET_=${__YES}
+_RUN_TEST_SET_=${__NO}
 if [[ ${_RUN_TEST_SET_} -eq ${__YES} || ${_FORCE_RUNNING_ALL_TESTS_} ]]
 then
 
@@ -1261,8 +1295,9 @@ fi
 
 
 # clean up
-# rm -rfv ${_TEMP_DIR_PREFIX}[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]
+rm -rf ${_TEMP_DIR_PREFIX}[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]
 rm -Rf ${_TEMP_DIR_}
+# echo "\${_TEMP_DIR_}: ${_TEMP_DIR_}"
 
 echo "____ Executed $((iSuccessResults+iFailureResults)) tests"
 echo "____ ${iSuccessResults} tests were successful"
