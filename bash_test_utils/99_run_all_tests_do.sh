@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Generated on: 2020-05-24 11:31:43
+# Generated on: 2020-05-24 16:53:21
 # find . -name \*_tests.sh -exec echo "_FORCE_RUNNING_ALL_TESTS_='YES' {}  | tee -a " \; | grep -v ${0} | grep -v '/_' >> $(dirname ${0})/99_run_all_tests_do.sh
 
 declare -r logFile="$(dirname ${0})/99_run_all_tests.log"
